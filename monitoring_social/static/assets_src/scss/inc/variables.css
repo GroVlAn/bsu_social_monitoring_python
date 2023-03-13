@@ -1,0 +1,64 @@
+@custom-media --headerMax (width > 1700px);
+@custom-media --header (width <= 1700px);
+@custom-media --desktop_big (width <= 1319px);
+
+@custom-media --desktopMax (width <= 1200px);
+@custom-media --desktopMin (width > 1199px);
+
+@custom-media --desktopSmallMax (width < 1100px);
+@custom-media --desktopSmallMin (width >= 1100px);
+
+@custom-media --tabletMax (width >= 1024px);
+@custom-media --tablet (width <= 1023px);
+@custom-media --tablet2 (width <= 959px);
+@custom-media --tablet2Max (width > 959px);
+
+@custom-media --tablet3 (width <= 767px);
+@custom-media --tablet3Max (width > 767px);
+
+@custom-media --mobileMax (width >= 640px);
+@custom-media --mobile (width <= 639px);
+
+@custom-media --mobileMiddle (width <= 499px);
+@custom-media --mobileMiddleMax (width >= 500px);
+@custom-media --mobile2 (width <= 424px);
+@custom-media --mobile2Max (width > 425px);
+@custom-media --mobile3 (width <= 350px);
+@custom-media --mobile3Max (width > 349px);
+
+
+@custom-media --touch (pointer: coarse), (width <= 1100px);
+
+/*  http://chir.ag/projects/name-that-color/ */
+
+:root {
+
+  --c_main: #ED1A14;
+  --c_bg: #293136;
+  --c_bg2: #28323B;
+  --c_bg3: #273035;
+  --c_dark: #1F1D1F;
+  --c_gray: #EAE9E4;
+  --c_light_gray: #F5F5F5;
+  --c_alt_gray: #9B9B9B;
+  --c_white: white;
+
+  --c_second_soft_blue: #3F5765;
+  --c_second_dark: #2B3A42;
+  --c_specials_blue: #4D5F69;
+  --c_second_light_blue:  #BDD4DE;
+  --c_second_gray: #EFEFEF;
+  --c_sub_gray: #384045;
+  --c_border_gray: #C4C4C4;
+  --c_specials_gray: #697279;
+  --c_head_line_2: #1D292F;
+
+  --red: red;
+
+	/*--Lato: Lato, Helvetica, Arial, sans-serif;*/
+	--font: 'Roboto', sans-serif;
+
+	--container_padding: 10px;
+
+	--maxWidth: 1920px;
+}

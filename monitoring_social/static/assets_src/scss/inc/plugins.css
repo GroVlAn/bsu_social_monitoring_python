@@ -1,0 +1,71 @@
+
+@import 'resources/assets_src/scss/inc/plugins/fancybox.css';
+@import 'resources/assets_src/scss/inc/plugins/fa.css';
+@import 'resources/assets_src/scss/inc/plugins/ui-slider.css';
+@import 'resources/assets_src/scss/inc/plugins/ui-autocomplete.css';
+@import 'resources/assets_src/scss/inc/plugins/ui-datepicker.css';
+@import 'resources/assets_src/scss/inc/plugins/ui-spinner.css';
+@import 'resources/assets_src/scss/inc/plugins/ui-helpers.css';
+@import 'resources/assets_src/scss/inc/plugins/ui-tooltip.css';
+
+.moving-bar-link-consult {position: relative;}
+#livetexarea {
+	position: absolute;
+	margin: 0;
+	z-index: 999;
+	right: 0;
+	top: auto;
+	bottom: 120%;
+}
+/*
+.lt-invite.lt-invite-rotate .lt-invite-popup .lt-invite-popup-inner {
+	position: fixed;
+	right: 0;
+	top: 50%;
+	bottom: auto;
+	margin: -95px 0 0;
+}
+*/
+.lt-widget-wrap.lt-internal .lt-wrapper-close .lt-icon:before {
+	left: 0.5px !important;
+}
+.lt-widget-wrap.lt-internal .lt-chat-header, .lt-widget-wrap.lt-internal .lt-wrapper-header {cursor: default !important;}
+.lt-widget-wrap.lt-internal .lt-wrapper-close {right: -27px !important;}
+.lt-label-mobile {display: none;}
+
+@media only screen and (max-width:1250px) {
+	.lt-widget-wrap.lt-internal .lt-wrapper-close {
+		right: 8px !important;
+		top: 6px !important;
+		opacity: 1 !important;
+		z-index: 9 !important;
+		border: 0 !important;
+	}
+	.lt-widget-wrap.lt-internal .lt-wrapper-close .lt-icon {
+		border: 0 !important;
+		box-shadow: none !important;
+		background: none !important;
+	}
+	.lt-widget-wrap.lt-internal .lt-wrapper-close .lt-icon:before {font-size: 21px !important;}
+}
+/* end liveTex */
+
+
+
+.SumoSelect>.optWrapper.multiple>.options li ul li.opt {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
