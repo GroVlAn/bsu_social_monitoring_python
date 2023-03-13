@@ -2,8 +2,8 @@ import * as nodePath from 'path';
 
 const rootFolder = nodePath.basename(nodePath.resolve());
 
-const buildFolder = './public/assets';
-const assetsPath = './resources/assets_src';
+const buildFolder = './assets';
+const assetsPath = './assets_src';
 
 export const path = {
   build: {
@@ -12,7 +12,7 @@ export const path = {
   },
   src: {
     js: `${assetsPath}/ts/app.ts`,
-    scss: `${assetsPath}/scss/style.css`,
+    scss: `${assetsPath}/scss/styles.css`,
     svg: `${assetsPath}/img/**/*.svg`,
   },
   watch: {

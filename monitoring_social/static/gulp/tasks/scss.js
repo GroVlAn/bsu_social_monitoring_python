@@ -6,7 +6,6 @@ import cleanCss from 'gulp-clean-css';
 import webpcss from 'gulp-webpcss';
 import autoprefixer from 'gulp-autoprefixer';
 import groupCssMediaQueries from 'gulp-group-css-media-queries';
-import {isDeploy, createPathForDeploy} from '../config/sftp.js';
 
 const sass = gulpSass(dartSass);
 const notifySettings = {
@@ -47,7 +46,6 @@ export const scss = () => {
     .pipe(rename({extname: '.min.css'}))
     .pipe(app.gulp.dest(app.path.build.css))
     .pipe(app.plugins.git.add())
-    .pipe(app.plugins.if(isDeploy, app.plugins.sftp(createPathForDeploy('public/assets/css'))))
     .pipe(app.plugins.debug({title: 'unicorn:'}))
     .pipe(app.plugins.notify({
       ...notifySettings,

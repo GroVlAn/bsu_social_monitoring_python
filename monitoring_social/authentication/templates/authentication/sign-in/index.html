@@ -1,0 +1,26 @@
+{% extends "auth.html" %}
+
+{% block content %}
+    <h1 class="sign__title">Вход</h1>
+    <div class="auth">
+        <div class="auth__wrapper">
+            <form method="post" class="auth__form">
+                {% csrf_token %}
+                <div>
+                    <label class="auth__label" for="id_username">Логин:</label>
+                    <input class="auth__input" type="text" name="username" id="id_username">
+                </div>
+                <div>
+                    <label class="auth__label" for="id_password">Пароль:</label>
+                    <input class="auth__input" type="password" name="password" id="id_password">
+                </div>
+                <div class="auth__btn">
+                    <button class="btn" type="submit">Войти</button>
+                </div>
+            </form>
+        </div>
+        <div class="auth__sing_link_block">
+            <a href="/auth/sign-up" class="auth__sing_link">Зарегистрироваться</a>
+        </div>
+    </div>
+{% endblock %}

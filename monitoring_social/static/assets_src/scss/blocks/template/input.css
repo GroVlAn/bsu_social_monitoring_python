@@ -1,0 +1,16 @@
+input[type=email], input[type=number], input[type=password], input[type=tel], input[type=text], textarea {
+    width: 100%;
+    padding: 1px 10px;
+    appearance: none;
+    transition: .3s ease-in;
+}
+input[type=email], input[type=number], input[type=password], input[type=tel], input[type=text], select, textarea {
+    border: 3px solid #5090d5;
+    border-radius: 17px;
+    height: 48px;
+    font-weight: 300;
+    background-color: #fff;
+    box-sizing: border-box;
+    color: #3f5765;
+    font-size: 2.4rem;
+}

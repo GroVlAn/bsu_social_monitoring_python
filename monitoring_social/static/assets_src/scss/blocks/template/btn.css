@@ -1,0 +1,19 @@
+.btn {
+    background: #5090d5;
+    border: 1px solid #426eaf;
+    border-radius: 17px;
+    color: #fff;
+    cursor: pointer;
+    min-height: 48px;
+    padding: 4px 4.5rem;
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+    font-size: 22px;
+    font-weight: 700;
+    transition: .15s;
+
+    &:hover {
+        background: #426eaf;
+    }
+}

@@ -1,0 +1,19 @@
+@mixin for-desctopSmall-only {
+    @media (--desktopSmallMax) and (--mobileMax) { @content; }
+}
+
+@mixin for-desctop-only {
+    @media (--desktopMax) and (--mobileMax) { @content; }
+}
+
+@mixin for-table-only {
+    @media (--tablet) and (--mobileMax) { @content; }
+}
+
+@mixin for-table2-only {
+    @media (--tablet2) and (--mobileMax) { @content; }
+}
+
+@mixin for-table3-only {
+    @media (--tablet3) and (--mobileMax) { @content; }
+}

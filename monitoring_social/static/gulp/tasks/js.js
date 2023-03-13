@@ -1,7 +1,6 @@
 import webpackStream from 'webpack-stream';
 import webpack from 'webpack';
 import webpackConfig from '../../webpack.config.js';
-import {createPathForDeploy, isDeploy} from '../config/sftp.js';
 
 export const js = () => {
   return app.gulp
@@ -20,6 +19,5 @@ export const js = () => {
     )
     .pipe(app.gulp.dest(app.path.build.js))
     .pipe(app.plugins.git.add())
-    .pipe(app.plugins.if(isDeploy, app.plugins.sftp(createPathForDeploy('assets/js'))))
     .pipe(app.plugins.browserSync.stream());
 };
