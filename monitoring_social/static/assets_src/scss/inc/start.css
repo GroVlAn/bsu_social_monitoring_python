@@ -398,19 +398,25 @@ body {
 .base_background {
     position: relative;
     width: 100vw;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #3892bd;
 }
 
 .base_container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     width: 98%;
     height: 98%;
     background: #F8F8F8;
     border-radius: 61px;
     padding: 40px;
-    box-shadow: 0    0 18px 9px #296c8c;
+    box-shadow: 0 0 18px 9px #296c8c;
+
+    &.this--auth {
+        width: 60%;
+        height: auto;
+    }
 }

@@ -2,7 +2,16 @@
 <html>
    {% include 'head.html' %}
     <body>
+      <div class="base_background">
+            <div class="base_container">
+            <div class="logout">
+                <span class="logout__login">{{ user.username }}</span>
+                <span class="logout__separator">|</span>
+                <a href="{% url 'logout' %}" class="logout__link">Выйти</a>
+            </div>
             {% block content %}
             {% endblock %}
+            </div>
+      </div>
     </body>
 </html>

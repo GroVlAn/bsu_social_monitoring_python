@@ -1,24 +1,19 @@
-{% extends "auth.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="sign__title">Вход</h1>
+<h1 class="sign__title">Создание организации</h1>
     <div class="auth">
         <div class="auth__wrapper">
-            <form class="auth__form" action="{% url 'sign_in_page' %}" method="post">
-                <div class="auth__errors">{{ form.non_field_errors }}</div>
+            <form class="auth__form" action="{% url 'create_organization' %}" method="POST">
                 {% csrf_token %}
                 {% for field in form %}
                     <label class="auth__label" for="{{ field.auto_id }}">{{ field.label }}</label>
-                    <div class="auth__errors">{{ field.errors }}</div>
                     {{ field }}
                 {% endfor %}
                 <div class="auth__btn">
                     <button class="btn" type="submit">Войти</button>
                 </div>
             </form>
-        </div>
-        <div class="auth__sing_link_block">
-            <a href="{% url 'sign_up_page' %}" class="auth__sing_link">Зарегистрироваться</a>
         </div>
     </div>
 {% endblock %}

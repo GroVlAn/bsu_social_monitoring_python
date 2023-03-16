@@ -17,6 +17,10 @@
     justify-content: center;
 }
 
+.auth__form {
+    width: 60%;
+}
+
 .auth__label {
     display: block;
     font-weight: 500;
@@ -25,7 +29,7 @@
 }
 
 .auth__input {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 }
 
 .auth__sing_link_block {
@@ -44,4 +48,36 @@
 .auth__btn {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
+}
+
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.logout__login {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.logout__separator {
+    font-weight: 700;
+    font-size: 28px;
+    margin: 0 10px;
+}
+
+.logout__link {
+    font-weight: 600;
+    font-size: 24px;
+    text-decoration: none;
+    color: #5090d5;
+    transition: .15s;
+
+    &:hover {
+        color: #426eaf;
+    }
 }

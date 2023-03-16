@@ -1,3 +1,4 @@
 from django.db import models
+from .models_db.Organization import Organization
 
-# Create your models here.
+__all__ = ['Organization']
