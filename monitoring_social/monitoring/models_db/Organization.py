@@ -12,3 +12,6 @@ class Organization(models.Model):
         User,
         blank=True,
     )
+
+    def __str__(self):
+        return self.name
