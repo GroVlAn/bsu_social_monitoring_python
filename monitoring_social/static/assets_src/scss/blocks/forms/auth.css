@@ -30,6 +30,7 @@
 
 .auth__input {
     margin-bottom: 25px;
+    height: auto;
 }
 
 .auth__sing_link_block {

@@ -409,7 +409,7 @@ body {
 .base_container {
     position: relative;
     width: 98%;
-    height: 98%;
+    height: 98vh;
     background: #F8F8F8;
     border-radius: 61px;
     padding: 40px;

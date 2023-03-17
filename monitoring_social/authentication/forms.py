@@ -22,6 +22,7 @@ class SignInForm(AuthenticationForm):
         )
     )
 
+
 class SignUpForm(UserCreationForm):
     error_messages = {
         'invalid': 'Такой аккаунт существует',
