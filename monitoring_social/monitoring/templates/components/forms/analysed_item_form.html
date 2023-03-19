@@ -1,13 +1,15 @@
-  <div class="auth__wrapper">
-            <form class="auth__form" action="{% url 'main' %}" method="POST">
-                {% csrf_token %}
-                {% for field in form %}
-                    <label class="auth__label" for="{{ field.auto_id }}">{{ field.label }}</label>
-                     <div class="auth__errors">{{ field.errors }}</div>
-                    {{ field }}
-                {% endfor %}
-                <div class="auth__btn">
-                    <button class="btn" type="submit">Создать</button>
-                </div>
-            </form>
+<div class="auth__wrapper">
+    <form class="auth__form" action="{% url 'main' %}" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="auth__item">
+                <label class="auth__label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                <div class="auth__errors">{{ field.errors }}</div>
+                {{ field }}
+            </div>
+        {% endfor %}
+        <div class="auth__btn">
+            <button class="btn" type="submit">Создать</button>
         </div>
+    </form>
+</div>
