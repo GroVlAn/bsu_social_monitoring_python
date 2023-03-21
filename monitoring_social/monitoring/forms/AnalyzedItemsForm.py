@@ -1,5 +1,4 @@
 from django import forms
-from django.forms.models import inlineformset_factory
 from monitoring.models_db.AnalyzedItems import *
 
 

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'monitoring',
     'authentication',
+    'vk_api_app',
 
 ]
 
