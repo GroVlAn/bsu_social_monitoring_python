@@ -13,8 +13,9 @@ class Post(BaseModel):
     text: str
     likes: Optional[CountableValue]
     comments: Optional[CountableValue]
-    repost: Optional[CountableValue]
+    reposts: Optional[CountableValue]
     views: Optional[CountableValue]
+    prefix = 'post-'
 
     def __str__(self):
         string = '{\n'
@@ -23,6 +24,17 @@ class Post(BaseModel):
         else:
             string += '}'
         return string
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'date': self.date,
+            'text': self.text,
+            'likes': self.likes.count if self.likes else None,
+            "comments": self.comments.count if self.comments else None,
+            "reposts": self.reposts.count if self.reposts else None,
+            "views": self.views.count if self.views else None
+        }
 
 
 class PostResponse(BaseModel):

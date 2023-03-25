@@ -9,9 +9,15 @@ class GroupAnalyzedItems(models.Model):
         unique=True,
         verbose_name='Группа элементов'
     )
+    ru_name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name='Русское имя группы элементов'
+    )
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.ru_name
 
     class Meta:
         db_table = 'monitoring_group_analyzed_items'
