@@ -1,23 +1,30 @@
+from datetime import date
+
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, CreateView
 
 from monitoring.mixins import BaseMixin
-from monitoring.services.OrganizationService import *
+from monitoring.models_db.Statistics import Statistics
+from monitoring.services.analysed_item_service import AnalyzedItemService
+from monitoring.services.organization_service import *
 
 from monitoring.forms.OrganizationForm import OrganizationForm
 from monitoring.forms.AnalyzedItemsForm import *
+from vk_api_app.services._vk_users_service import VkUsersService
+from vk_api_app.services.vk_api_service import start_get_data
+from monitoring.models_db.Organization import Organization
 
 
 def index(request):
+    if request.user.is_authenticated:
+        organization = Organization.objects.get(users=request.user)
+        start_get_data(organization, request.user)
     return render(request, 'monitoring/index.html')
 
 
-def main(request):
-    return render(request, 'monitoring/main/index.html')
-
-
-class Organization(BaseMixin, CreateView):
+class OrganizationView(BaseMixin, CreateView):
     form_class = OrganizationForm
     title = 'Создание организации'
     template_name = 'monitoring/organization/create/index.html'
@@ -42,9 +49,20 @@ class Monitoring(BaseMixin, CreateView):
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
+        c_def['result'] = self.get_all_analyzed_items()
+        print(VkUsersService.get_list(self.request.user)[0].vk_user_summary.score)
+        c_def['vk_users'] = VkUsersService.get_list(self.request.user)
         return dict(list(context.items()) + list(c_def.items()))
 
+    def get_all_analyzed_items(self):
+        groups = AnalyzedItemService.get_all_groups()
+        result = ({'name_group': group.ru_name,
+                   'analyzed_items': AnalyzedItemService.get_list(
+                       user=self.request.user,
+                       name_grop=group.name)
+                   } for group in groups)
+        return result
+
     def form_valid(self, form):
-        print(self.request)
         create_analysed_item(form)
         return redirect('main')

@@ -8,7 +8,7 @@ class RequireLoginMiddleware:
         self.allowed_urls = [
             reverse('sign_in_page'),
             reverse('sign_up_page'),
-            reverse('home')
+            reverse('home'),
         ]
 
     def __call__(self, request):

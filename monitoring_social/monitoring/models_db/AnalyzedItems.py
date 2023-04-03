@@ -14,6 +14,7 @@ class GroupAnalyzedItems(models.Model):
         unique=True,
         verbose_name='Русское имя группы элементов'
     )
+    level = models.IntegerField(default=1)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -49,16 +50,25 @@ class AnalyzedItem(models.Model):
         db_table = 'monitoring_analyzed_item'
 
 
-class AnalysedItemsSummaryStatistics(models.Model):
+class AnalyzedItemsSummaryStatistics(models.Model):
     owner = models.OneToOneField(
         AnalyzedItem,
         on_delete=models.CASCADE,
-        primary_key=True
+        primary_key=True,
+        related_name='summary_statistics'
     )
     likes = models.TextField(default=0)
     comments = models.TextField(default=0)
-    reports = models.TextField(default=0)
-    score = models.TextField(default=0)
+    reposts = models.TextField(default=0)
+    score = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'monitoring_analyzed_items_summary_statistics'
+
+
+class AnalyzedItemKeywords(models.Model):
+    keyword = models.TextField(blank=True, null=True)
+    owner = models.ForeignKey(AnalyzedItem, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'monitoring_analyzed_item_keywords'

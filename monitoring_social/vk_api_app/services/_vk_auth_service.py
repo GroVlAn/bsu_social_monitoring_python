@@ -1,7 +1,7 @@
 import vk_api
 
 
-class VkAuth:
+class VkAuthService:
     def __init__(self, *, token: str = None, group_id) -> None:
         self._vk_session = vk_api.VkApi(token=token)
         self._vk = self._vk_session.get_api()

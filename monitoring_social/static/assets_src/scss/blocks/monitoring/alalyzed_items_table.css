@@ -1,0 +1,54 @@
+.monitoring {
+    margin-bottom: -20px;
+}
+
+.monitoring__wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.monitoring__name {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 16px;
+    text-align: center;
+    padding: 20px 0;
+     background: rgb(214 223 239 / 75%);
+    backdrop-filter: blur(4px);
+}
+
+.monitoring__table {
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+.monitoring__thread {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 16px;
+background: rgb(214 223 239 / 75%);
+    backdrop-filter: blur(4px);
+}
+
+
+.monitoring__th {
+    padding: 12px 0;
+}
+
+.monitoring_td {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    padding: 12px 0;
+}
+
+.monitoring_tr {
+    background-color: #f3f3f3;
+
+    &:nth-child(2n) {
+        background-color: #eaedf3;
+    }
+}

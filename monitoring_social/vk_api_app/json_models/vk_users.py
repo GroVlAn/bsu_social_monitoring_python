@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class UsersId(BaseModel):
     ids: List[int] = []
+    prefix = 'user-'
 
     class Config:
         fields = {

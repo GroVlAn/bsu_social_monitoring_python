@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="sign__title">Мониторинг</h1>
-   {% include 'components/forms/analysed_item_form.html' %}
+    <h1 class="sign__title">Мониторинг</h1>
+    {#   {% include 'components/forms/analysed_item_form.html' %}#}
+
+    {% include 'views/monitoring/analyzed_items_table.html' %}
+
 {% endblock %}

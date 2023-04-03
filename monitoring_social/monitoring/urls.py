@@ -19,6 +19,6 @@ from monitoring.views.views import *
 
 urlpatterns = [
     path('', index, name='home'),
-    path('main/organization/create/', Organization.as_view(), name='create_organization'),
+    path('main/organization/create/', OrganizationView.as_view(), name='create_organization'),
     path('main/', Monitoring.as_view(), name='main')
 ]

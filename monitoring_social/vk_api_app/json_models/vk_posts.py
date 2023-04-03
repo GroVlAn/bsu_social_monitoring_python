@@ -1,3 +1,4 @@
+import json
 from typing import Optional, List
 
 from pydantic import BaseModel
@@ -11,10 +12,10 @@ class Post(BaseModel):
     id: int
     date: int
     text: str
-    likes: Optional[CountableValue]
-    comments: Optional[CountableValue]
-    reposts: Optional[CountableValue]
-    views: Optional[CountableValue]
+    likes: Optional[CountableValue] | int
+    comments: Optional[CountableValue] | int
+    reposts: Optional[CountableValue] | int
+    views: Optional[CountableValue] | int
     prefix = 'post-'
 
     def __str__(self):

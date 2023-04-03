@@ -7,5 +7,6 @@ __all__ = [
     'Organization',
     'GroupAnalyzedItems',
     'AnalyzedItem',
+    'AnalyzedItemKeywords',
     'Statistics'
 ]

@@ -7,3 +7,5 @@
 @import './blocks/template/input.css';
 
 @import "./blocks/forms/auth.css";
+
+@import "./blocks/monitoring/alalyzed_items_table.css";
