@@ -12,13 +12,11 @@ class VkUserStatisticsService:
         if VkUserStatistics.objects.filter(date_from=statistics['date_from'], owner__id_user=owner):
             return
 
-        tz = pytz.timezone('Europe/Moscow')
         aware_datetime_from = statistics['date_from']
         aware_datetime_to = statistics['date_to']
         formatted_datetime_from = aware_datetime_from.strftime('%Y-%m-%d %H:%M:%S.%f%z' )
         formatted_datetime_to = aware_datetime_to.strftime('%Y-%m-%d %H:%M:%S.%f%z')
 
-        vk_user = None
         if not VkUser.objects.filter(id_user=owner, organization=organization).exists():
             vk_user = VkUser(id_user=owner, organization=organization)
             vk_user.save()

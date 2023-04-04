@@ -1,11 +1,7 @@
-from copy import copy
-from ctypes import Union
-
 import datetime
 import time
 import re
 from pytz import timezone
-from dateutil.relativedelta import relativedelta
 
 
 def get_last_month_date():
@@ -23,8 +19,8 @@ def get_last_month_date():
     return first_day_of_previous_month
 
 
-class VkValidation:
-    default_date_before = datetime.datetime(2023, 1, 1, tzinfo=timezone('UTC'))
+class VkValidationHandler:
+    default_date_before = datetime.datetime(2023, 3, 1, tzinfo=timezone('UTC'))
 
     def __init__(self, *, date_before=None, date_after=None):
         """
@@ -33,7 +29,7 @@ class VkValidation:
         """
 
         self.date_before = date_before or self.default_date_before
-        self.date_after = date_after or datetime.datetime(2023, 2, 1, tzinfo=timezone('UTC'))
+        self.date_after = date_after or datetime.datetime(2023, 4, 1, tzinfo=timezone('UTC'))
 
     def is_before_self_date(self, date: int) -> bool:
         """Check that date from post more that self date before"""
@@ -61,7 +57,7 @@ class VkValidation:
 
     @staticmethod
     def keyword_in_text_post(*, keywords: tuple, current_text: str) -> bool:
-        return any([VkValidation.text_contains_in_text_post(
+        return any([VkValidationHandler.text_contains_in_text_post(
             current_text=current_text,
             searching_item=keyword.keyword)
             for keyword in keywords])
@@ -70,8 +66,7 @@ class VkValidation:
     def text_contains_in_text_post(*, current_text: str, searching_item: str) -> bool:
         """Check that current text contains in post
         :param current_text: text that def is searching item
-        :param searching_item: some text, for example may be named of analysed item
-        """
+        :param searching_item: some text, for example may be named of analysed item """
 
         if len(current_text) == 0:
             return False

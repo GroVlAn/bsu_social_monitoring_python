@@ -2,13 +2,18 @@ from typing import Optional
 
 from django.contrib.auth.models import User
 
-from monitoring.models_db.AnalyzedItems import AnalyzedItemsSummaryStatistics, AnalyzedItem, GroupAnalyzedItems
+from monitoring.models_db.AnalyzedItems import AnalyzedItemsSummaryStatistics, AnalyzedItem, GroupAnalyzedItems, \
+    AnalyzedItemKeywords
 from monitoring.models_db.Organization import Organization
 from monitoring.models_db.Statistics import Statistics
 from vk_api_app.models_db.vk_post import VkPost
 
 
 class AnalyzedItemService:
+
+    @staticmethod
+    def get_keywords_tuple(*, analysed_item):
+        return tuple(AnalyzedItemKeywords.objects.filter(owner=analysed_item))
 
     @staticmethod
     def update(*, statistic: dict, analysed_item) -> None:
