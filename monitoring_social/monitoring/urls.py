@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 
 from monitoring.views.views import *
+from monitoring.views.MonitoringView import *
 
 urlpatterns = [
     path('', index, name='home'),

@@ -4,9 +4,11 @@ from monitoring.models_db.Organization import *
 
 
 class GroupAnalyzedItems(models.Model):
-    name = models.CharField(
+    name = models.SlugField(
         max_length=255,
         unique=True,
+        null=True,
+        blank=True,
         verbose_name='Группа элементов'
     )
     ru_name = models.CharField(

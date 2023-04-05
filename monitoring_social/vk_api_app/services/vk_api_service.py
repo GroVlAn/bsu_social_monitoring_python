@@ -14,7 +14,7 @@ from vk_api_app.handlers.vk_validation_handler import VkValidationHandler
 from vk_api_app.handlers.vk_auth_handler import VkAuthHandler
 from vk_api_app.services._vk_posts_service import VkPostsService
 from vk_api_app.services._vk_user_statistics_service import VkUserStatisticsService
-from vk_api_app.services._vk_users_service import VkUsersService
+from vk_api_app.services.vk_users_service import VkUsersService
 
 
 class VkAPIAbstractService:
