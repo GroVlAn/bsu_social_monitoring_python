@@ -1,6 +1,10 @@
 import datetime
 import threading
 import time
+from celery import Celery
+from django.contrib.auth.models import User
+
+from celery_app.celery import app
 from monitoring.models_db.AnalyzedItems import AnalyzedItem
 from monitoring.models_db.Organization import Organization
 from monitoring.services.analysed_item_service import AnalyzedItemService
@@ -209,7 +213,8 @@ class VkAPIService(VkAPIAbstractService):
 
 
 def thread_worker(organization):
-    time_start = time.time()
+    print('worker starting')
+    time_start = time.monotonic()
     redis_handler = RedisHandler()
     redis_handler.clear_all()
     vk_api_posts_service = VkAPIPostService(redis_handler=redis_handler, organization_id=organization.id)
@@ -228,16 +233,11 @@ def thread_worker(organization):
         AnalyzedItemService.count_summary(organization=organization)
         VkUsersService.count_summary(organization)
         vk_api_users_service.save_users_info(organization.id)
-        time_end = time.time()
+        time_end = time.monotonic()
         elapsed_time = datetime.timedelta(seconds=int(time_end - time_start))
-        print('thread worked %s time' % elapsed_time)
+        print('Task worked %s time' % elapsed_time)
 
     return worker
 
 
-def start_get_data(organization, user):
-    id_thread = str(user.id) + user.username
-    if id_thread not in [thread.name for thread in threading.enumerate()]:
-        worker = thread_worker(organization)
-        thread = threading.Thread(target=worker, name=id_thread)
-        thread.start()
+

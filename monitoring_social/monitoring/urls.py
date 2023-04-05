@@ -21,5 +21,6 @@ from monitoring.views.MonitoringView import *
 urlpatterns = [
     path('', index, name='home'),
     path('main/organization/create/', OrganizationView.as_view(), name='create_organization'),
-    path('main/', Monitoring.as_view(), name='main')
+    path('main/', Monitoring.as_view(), name='main'),
+    path('vk/get/data', start_getting_data_from_vk, name='get_vk_api')
 ]

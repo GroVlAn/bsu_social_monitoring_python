@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from monitoring.views.MonitoringView import start_getting_data_from_vk
+
+
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', include('monitoring.urls')),

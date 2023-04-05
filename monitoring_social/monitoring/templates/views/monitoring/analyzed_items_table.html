@@ -1,3 +1,7 @@
+<form action="{% url 'get_vk_api' %}" class="monitoring_form" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn">Получить данные</button>
+</form>
 <div class="monitoring">
     {% for item in result %}
         <div class="monitoring__wrapper">

@@ -1,18 +1,13 @@
 from django.shortcuts import render, redirect
-from django.views.generic import FormView, CreateView
+from django.views.generic import CreateView
 
 from monitoring.mixins import BaseMixin
 from monitoring.services.organization_service import *
 
 from monitoring.forms.OrganizationForm import OrganizationForm
-from vk_api_app.services.vk_api_service import start_get_data
-from monitoring.models_db.Organization import Organization
 
 
 def index(request):
-    if request.user.is_authenticated:
-        organization = Organization.objects.get(users=request.user)
-        start_get_data(organization, request.user)
     return render(request, 'monitoring/index.html')
 
 

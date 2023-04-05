@@ -20,7 +20,7 @@ def get_last_month_date():
 
 
 class VkValidationHandler:
-    default_date_before = datetime.datetime(2023, 3, 1, tzinfo=timezone('UTC'))
+    default_date_before = datetime.datetime(2023, 2, 1, tzinfo=timezone('UTC'))
 
     def __init__(self, *, date_before=None, date_after=None):
         """
@@ -29,7 +29,7 @@ class VkValidationHandler:
         """
 
         self.date_before = date_before or self.default_date_before
-        self.date_after = date_after or datetime.datetime(2023, 4, 1, tzinfo=timezone('UTC'))
+        self.date_after = date_after or datetime.datetime(2023, 3, 1, tzinfo=timezone('UTC'))
 
     def is_before_self_date(self, date: int) -> bool:
         """Check that date from post more that self date before"""
