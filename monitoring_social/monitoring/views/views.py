@@ -4,7 +4,7 @@ from django.views.generic import CreateView
 from monitoring.mixins import BaseMixin
 from monitoring.services.organization_service import *
 
-from monitoring.forms.OrganizationForm import OrganizationForm
+from monitoring.forms.organization_form import OrganizationForm
 
 
 def index(request):
@@ -24,6 +24,6 @@ class OrganizationView(BaseMixin, CreateView):
 
     def form_valid(self, form):
         create_organization(self.request, form)
-        return redirect('main')
+        return redirect('monitoring')
 
 

@@ -1,4 +1,4 @@
-from monitoring.models_db.AnalyzedItems import AnalyzedItemsSummaryStatistics
+from monitoring.models_db.analyzed_items import AnalyzedItemsSummaryStatistics
 
 
 def create_organization(request, form) -> None:

@@ -1,5 +1,5 @@
 from django import forms
-from monitoring.models_db.Organization import *
+from monitoring.models_db.organization import *
 
 
 class OrganizationForm(forms.ModelForm):

@@ -1,5 +1,5 @@
 from django import forms
-from monitoring.models_db.AnalyzedItems import *
+from monitoring.models_db.analyzed_items import *
 
 
 class GroupAnalyzedItemsForm(forms.ModelForm):

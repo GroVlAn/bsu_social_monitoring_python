@@ -1,4 +1,4 @@
-from monitoring.models_db.Organization import Organization
+from monitoring.models_db.organization import Organization
 from vk_api_app.models_db.vk_user import VkUserStatistics, VkUser, VkUserSummaryStatistics
 
 

@@ -5,8 +5,8 @@ from celery import Celery
 from django.contrib.auth.models import User
 
 from celery_app.celery import app
-from monitoring.models_db.AnalyzedItems import AnalyzedItem
-from monitoring.models_db.Organization import Organization
+from monitoring.models_db.analyzed_items import AnalyzedItem
+from monitoring.models_db.organization import Organization
 from monitoring.services.analysed_item_service import AnalyzedItemService
 from monitoring.services.statistics_service import StatisticsService
 from vk_api_app.handlers.vk_post_handler import VkPostHandler

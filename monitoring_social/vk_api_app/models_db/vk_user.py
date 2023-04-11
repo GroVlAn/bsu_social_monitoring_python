@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from monitoring.models_db.Organization import Organization
+from monitoring.models_db.organization import Organization
 
 
 class VkUser(models.Model):

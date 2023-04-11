@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from monitoring.models_db import AnalyzedItems
-from monitoring.models_db.AnalyzedItems import GroupAnalyzedItems
-from monitoring.models_db.Organization import Organization
+from monitoring.models_db import analyzed_items
+from monitoring.models_db.analyzed_items import GroupAnalyzedItems
+from monitoring.models_db.organization import Organization
 
 
 admin.site.register(Organization)

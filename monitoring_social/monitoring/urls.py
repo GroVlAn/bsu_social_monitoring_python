@@ -16,11 +16,13 @@ Including another URLconf
 from django.urls import path
 
 from monitoring.views.views import *
-from monitoring.views.MonitoringView import *
+from monitoring.views.monitoring_view import *
 
 urlpatterns = [
     path('', index, name='home'),
     path('main/organization/create/', OrganizationView.as_view(), name='create_organization'),
-    path('main/', Monitoring.as_view(), name='main'),
+    path('monitoring/', MonitoringView.as_view(), name='monitoring'),
+    path('vk/users/', MonitoringVkUsers.as_view(), name='monitoring'),
+    path('monitoring/<slug:monitoring_slug>', MonitoringDetailView.as_view(), name='monitoring_detail'),
     path('vk/get/data', start_getting_data_from_vk, name='get_vk_api')
 ]

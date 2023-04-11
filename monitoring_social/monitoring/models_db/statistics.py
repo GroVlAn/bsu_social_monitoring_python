@@ -1,5 +1,5 @@
 from django.db import models
-from monitoring.models_db.AnalyzedItems import *
+from monitoring.models_db.analyzed_items import *
 
 
 class Statistics(models.Model):

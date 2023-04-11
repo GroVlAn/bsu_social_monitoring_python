@@ -1,7 +1,7 @@
 import pytz
 from datetime import datetime
 
-from monitoring.models_db.AnalyzedItems import AnalyzedItem
+from monitoring.models_db.analyzed_items import AnalyzedItem
 from vk_api_app.models_db.vk_post import VkPost
 
 

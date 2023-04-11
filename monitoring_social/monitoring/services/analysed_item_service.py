@@ -2,10 +2,10 @@ from typing import Optional
 
 from django.contrib.auth.models import User
 
-from monitoring.models_db.AnalyzedItems import AnalyzedItemsSummaryStatistics, AnalyzedItem, GroupAnalyzedItems, \
+from monitoring.models_db.analyzed_items import AnalyzedItemsSummaryStatistics, AnalyzedItem, GroupAnalyzedItems, \
     AnalyzedItemKeywords
-from monitoring.models_db.Organization import Organization
-from monitoring.models_db.Statistics import Statistics
+from monitoring.models_db.organization import Organization
+from monitoring.models_db.statistics import Statistics
 from vk_api_app.models_db.vk_post import VkPost
 
 
@@ -36,6 +36,11 @@ class AnalyzedItemService:
     @staticmethod
     def get_all_groups() -> tuple[GroupAnalyzedItems]:
         return tuple(GroupAnalyzedItems.objects.all())
+
+    @staticmethod
+    def get_by_group(*, user: User, group: str):
+        organization = Organization.objects.get(users=user)
+        return tuple(AnalyzedItem.objects.filter(organization=organization, group__name=group))
 
     @staticmethod
     def _sum_children_statistic(*, analyzed_items: tuple[AnalyzedItem]):

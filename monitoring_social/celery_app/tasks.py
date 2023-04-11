@@ -3,7 +3,7 @@ from celery.states import state, STARTED
 from django.contrib.auth.models import User
 
 from celery_app.celery import app
-from monitoring.models_db.Organization import Organization
+from monitoring.models_db.organization import Organization
 from vk_api_app.services.vk_api_service import thread_worker
 
 

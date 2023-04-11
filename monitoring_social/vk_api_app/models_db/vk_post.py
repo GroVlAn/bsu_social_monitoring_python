@@ -1,6 +1,6 @@
 from django.db import models
 
-from monitoring.models_db.AnalyzedItems import AnalyzedItem
+from monitoring.models_db.analyzed_items import AnalyzedItem
 
 
 class VkPost(models.Model):

@@ -1,0 +1,43 @@
+ <div class="monitoring">
+        <div class="monitoring__wrapper">
+            <div class="monitoring__name">{{ result.name_group }}</div>
+            <div class="monitoring__data">
+                    <table class="monitoring__table">
+                    <thead class="monitoring__thread">
+                    <tr class="monitoring__tr">
+                        <th class="monitoring__th">№</th>
+                        <th class="monitoring__th">Название</th>
+                        <th class="monitoring__th">Лайки</th>
+                        <th class="monitoring__th">Комментарии</th>
+                        <th class="monitoring__th">Репосты</th>
+                        <th class="monitoring__th">Счёт</th>
+                    </tr>
+                    </thead>
+                    <tbody class="monitoring__tbody">
+                    {% for analyzed_item in result.analyzed_items %}
+                        <tr class="monitoring_tr">
+                            <td class="monitoring_td">
+                                {{ forloop.counter }}
+                            </td>
+                            <td class="monitoring_td">
+                                {{ analyzed_item.name }}
+                            </td>
+                            <td class="monitoring_td">
+                                {{ analyzed_item.summary_statistics.likes }}
+                            </td>
+                            <td class="monitoring_td">
+                                {{ analyzed_item.summary_statistics.comments }}
+                            </td>
+                            <td class="monitoring_td">
+                                {{ analyzed_item.summary_statistics.reposts }}
+                            </td>
+                            <td class="monitoring_td">
+                                {{ analyzed_item.summary_statistics.score }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

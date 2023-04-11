@@ -1,8 +1,8 @@
 from datetime import datetime
 import pytz
 
-from monitoring.models_db.AnalyzedItems import AnalyzedItem
-from monitoring.models_db.Statistics import Statistics
+from monitoring.models_db.analyzed_items import AnalyzedItem
+from monitoring.models_db.statistics import Statistics
 
 
 class StatisticsService:

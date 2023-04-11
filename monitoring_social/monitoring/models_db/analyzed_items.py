@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from monitoring.models_db.Organization import *
+from monitoring.models_db.organization import *
 
 
 class GroupAnalyzedItems(models.Model):

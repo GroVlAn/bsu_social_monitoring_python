@@ -1,7 +1,7 @@
 from django.db import models
-from .models_db.Organization import Organization
-from monitoring.models_db.AnalyzedItems import *
-from monitoring.models_db.Statistics import *
+from .models_db.organization import Organization
+from monitoring.models_db.analyzed_items import *
+from monitoring.models_db.statistics import *
 
 __all__ = [
     'Organization',
