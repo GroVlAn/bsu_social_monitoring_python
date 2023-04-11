@@ -26,7 +26,6 @@ class MonitoringView(BaseMixin, CreateView):
         c_def['result'] = self.get_all_analyzed_items()
         c_def['vk_users'] = VkUsersService.get_list(self.request.user)
         c_def['monitoring_menu'] = self.make_monitoring_menu()
-        print(self.make_monitoring_menu())
         return dict(list(context.items()) + list(c_def.items()))
 
     def make_monitoring_menu(self):
@@ -68,7 +67,6 @@ class MonitoringDetailView(BaseMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.slug_field)
         c_def = self.get_base_context(title=self.title)
         group = self.kwargs.get('monitoring_slug')
         analyzed_items = AnalyzedItemService.get_by_group(
@@ -79,14 +77,12 @@ class MonitoringDetailView(BaseMixin, ListView):
 
         c_def['result'] = {'name_group': group_ru_name,
                            'analyzed_items': analyzed_items}
-        print(context)
         return c_def
 
 
 def start_getting_data_from_vk(request):
     if request.method == 'POST' and request.user.is_authenticated:
         organization = Organization.objects.get(users=request.user)
-        print('YES')
         start_get_data.delay({'organization_id': organization.id,
                               'user_id': request.user.id,
                               'user_name': request.user.username})
