@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.urls import path
 
-from monitoring.views.views import *
-from monitoring.views.monitoring_view import *
+from monitoring.views.main_views import index
+from monitoring.views.monitoring_view import (
+    MonitoringView,
+    MonitoringVkUsers,
+    MonitoringDetailView,
+    start_getting_data_from_vk)
+from monitoring.views.organization_view import OrganizationView
+
 
 urlpatterns = [
     path('', index, name='home'),
