@@ -10,12 +10,9 @@
 
 .monitoring__name {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 27px;
     line-height: 16px;
-    text-align: center;
-    padding: 20px 0;
-     background: rgb(214 223 239 / 75%);
-    backdrop-filter: blur(4px);
+    padding: 20px 0 20px 20px;
 }
 
 .monitoring__table {
@@ -28,7 +25,7 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 16px;
-background: rgb(214 223 239 / 75%);
+    background: rgb(214 223 239 / 75%);
     backdrop-filter: blur(4px);
 }
 
@@ -51,4 +48,33 @@ background: rgb(214 223 239 / 75%);
     &:nth-child(2n) {
         background-color: #eaedf3;
     }
+}
+
+.monitoring_form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.monitoring_menu,
+.monitoring_menu__item {
+    list-style: none;
+}
+
+.monitoring_menu__item {
+    margin-bottom: 20px;
+}
+
+.monitoring_menu__link {
+    text-decoration: none;
+    background-color: #d1d5db;
+    display: block;
+    width: 100%;
+    padding: 12px 10px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #374151;
+    border-radius: 10px;
+    transition: .15s;
 }

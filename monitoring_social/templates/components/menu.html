@@ -1,0 +1,16 @@
+<div class="left_menu">
+
+    <ul class="left_menu__menu">
+        {% for item in menu %}
+            <li class="left_menu__item">
+                <a href="{{ item.url }}"
+                   class="left_menu__link{% if item.active %} active{% endif %}">
+                    {{ item.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="left_menu__bottom">
+        <a href="{% url 'logout' %}" class="logout__link">Выйти</a>
+    </div>
+</div>

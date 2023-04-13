@@ -5,7 +5,10 @@
 
 @import './blocks/template/btn.css';
 @import './blocks/template/input.css';
+@import './blocks/template/consructor_blocks.css';
 
 @import "./blocks/forms/auth.css";
+@import "./blocks/components/menu.css";
+@import "./blocks/header.css";
 
 @import "./blocks/monitoring/alalyzed_items_table.css";

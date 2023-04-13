@@ -1,0 +1,9 @@
+.main__top_menu {
+    padding: 0 20px;
+}
+
+.header_name {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}

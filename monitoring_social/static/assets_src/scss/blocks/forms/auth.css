@@ -1,5 +1,5 @@
 .sign__title {
-    color: #3b6fa2;
+    color: #374151;
 }
 
 .auth {
@@ -42,7 +42,7 @@
 .auth__sing_link {
     font-size: 24px;
     font-weight: 600;
-    color: #5090d5;
+    color: #374151;
     text-decoration: none;
 }
 
@@ -54,8 +54,9 @@
 
 .logout {
     position: absolute;
-    top: 20px;
+    top: 50%;
     right: 40px;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
 }
@@ -75,10 +76,10 @@
     font-weight: 600;
     font-size: 24px;
     text-decoration: none;
-    color: #5090d5;
+    color: #374151;
     transition: .15s;
 
     &:hover {
-        color: #426eaf;
+        color: #374151;
     }
 }

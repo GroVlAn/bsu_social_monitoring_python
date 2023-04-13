@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html>
-   {% include 'head.html' %}
-    <body>
-      <div class="base_background">
-            <div class="base_container">
-            <div class="logout">
-                <span class="logout__login">{{ user.username }}</span>
-                <span class="logout__separator">|</span>
-                <a href="{% url 'logout' %}" class="logout__link">Выйти</a>
+{% include 'head.html' %}
+<body>
+<div class="main">
+    <div class="main__container js_left_menu">
+        <div class="main__left_menu ">
+            {% include 'components/menu.html' %}
+        </div>
+
+        <div class="main__right_block">
+            <div class="main__top_menu">
+                <div class="left_menu__btn">
+                    <div id="icon" class="Icon js_close_menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="header_name">
+                    <span class="logout__login">Здравствуйте, {{ user.username }}</span>
+                </div>
             </div>
-            {% block content %}
-            {% endblock %}
+            <div class="main__content">
+                <div class="content">
+                    {% block content %}
+                    {% endblock %}
+                </div>
             </div>
-      </div>
-    </body>
+        </div>
+    </div>
+</div>
+<script src="/static/assets/js/main.js"></script>
+</body>
 </html>

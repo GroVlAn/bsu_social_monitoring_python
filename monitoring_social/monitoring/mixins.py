@@ -3,17 +3,14 @@ def generate_base_menu():
         {
             'name': 'Главная',
             'code': 'main',
-            'url': ''
-        },
-        {
-            'name': 'Мониторинг',
-            'code': 'monitoring',
-            'url': ''
+            'url': '/monitoring',
+            'active': False
         },
         {
             'name': 'Настройки',
             'code': 'settings',
-            'url': ''
+            'url': '#',
+            'active': False
         },
     ]
 
@@ -26,8 +23,9 @@ class BaseMixin:
 
     def get_base_context(self, *args, object_list=None, **kwargs):
         context = kwargs
-        context['menu'] = self.menu
         context['title'] = self.title
         context['active_menu'] = self.active_menu
+        self.menu[self.active_menu]['active'] = True
+        context['menu'] = self.menu
         context['show_menu'] = self.show_menu
         return context
