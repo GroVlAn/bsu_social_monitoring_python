@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="constructor_blocs this--left">
+        <div class="constructor_bloc this--inline this--b_b_r_0 this--flex this--sb">
+            <a href="javascript:history.go(-1)" class="btn">Назад</a>
+        </div>
+    </div>
+
+    <div class="constructor_blocs">
+        <div class="constructor_bloc this--flex this--t_l_b_r_0 this--sb">
+            <div class="default_form__wrapper">
+                <form class="default_form" action="{% url 'group_analyzed_items_form' %}" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="default_form__fields">
+                            <div class="default_form__field">
+                                <label class="default_form__label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                <div class="default_form__error">{{ field.errors }}</div>
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="default_form__btn">
+                        <button class="btn" type="submit">Создать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

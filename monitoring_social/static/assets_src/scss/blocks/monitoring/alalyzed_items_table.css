@@ -13,6 +13,12 @@
     font-size: 27px;
     line-height: 16px;
     padding: 20px 0 20px 20px;
+
+    &.this--flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
 .monitoring__table {
@@ -25,13 +31,14 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 16px;
-    background: rgb(214 223 239 / 75%);
+    background: #947bff;
+    color: #FFFFFF;
     backdrop-filter: blur(4px);
 }
 
 
 .monitoring__th {
-    padding: 12px 0;
+    padding: 12px 15px;
 }
 
 .monitoring_td {
@@ -68,13 +75,17 @@
 
 .monitoring_menu__link {
     text-decoration: none;
-    background-color: #d1d5db;
+    background-color: #8e76f6;
     display: block;
     width: 100%;
     padding: 12px 10px;
-    font-weight: 500;
-    font-size: 16px;
-    color: #374151;
+    font-weight: 700;
+    font-size: 18px;
+    color: #FFFFFF;
     border-radius: 10px;
     transition: .15s;
+
+    &:hover {
+        background-color: #7a5cfa;
+    }
 }

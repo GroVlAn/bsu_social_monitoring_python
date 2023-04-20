@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="constructor_blocs">
+        <div class="constructor_bloc">
+            <h1>Профиль</h1>
+            <div class="default_form_wrapper">
+                <form action="{% url 'user_settings' %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="default_form__fields">
+                            <div class="default_form__field">
+                                <label class="default_form__label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                <div class="default_form__error">{{ field.errors }}</div>
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="default_form__btn">
+                        <button class="btn" type="submit">Сохранить</button>
+                    </div>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            {{ field }} - {{ error }}
+                        {% endfor %}
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

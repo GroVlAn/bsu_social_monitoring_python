@@ -1,0 +1,7 @@
+<ul class="monitoring_menu">
+    {% for item in page_menu %}
+        <li class="monitoring_menu__item">
+            <a href="{{ item.url }}" class="monitoring_menu__link">{{ item.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

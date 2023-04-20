@@ -1,5 +1,9 @@
+from transliterate import translit
+
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
+
 from monitoring.models_db.organization import *
 
 
@@ -21,6 +25,12 @@ class GroupAnalyzedItems(models.Model):
 
     def __str__(self):
         return self.ru_name
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            slug_text = slugify(self.ru_name, allow_unicode=True)
+            self.name = translit(slug_text, 'ru', reversed=True)
+        super(GroupAnalyzedItems, self).save(*args, **kwargs)
 
     class Meta:
         db_table = 'monitoring_group_analyzed_items'

@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="monitoring__name">{{ result.name_group }}</div>
+    <div class="monitoring__name">
+        Пользователи
+    </div>
 
     <div class="constructor_blocs">
         <div class="constructor_bloc">
-            {% include 'views/monitoring/detail_list.html' %}
+            {% include 'views/monitoring/detail_vk_users.html' %}
         </div>
     </div>
 {% endblock %}

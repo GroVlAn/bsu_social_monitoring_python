@@ -5,6 +5,20 @@
         margin-left: -25px;
     }
 
+    &.this--left {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    &.this--a_c {
+        align-items: center;
+    }
+
+    &.this--right {
+        display: flex;
+        justify-content: flex-end;
+    }
+
     &.this--sb {
         justify-content: space-between;
     }
@@ -25,12 +39,23 @@
         display: flex;
     }
 
+    &.this--t_l_b_r_0 {
+        border-top-left-radius: 0;
+    }
+
+    &.this--b_b_r_0 {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
     &.this--sb {
         justify-content: space-between;
     }
 
     &.this--inline {
         display: inline;
+        width: auto;
+        margin: 0;
     }
 
     @media (--tablet2Max) {

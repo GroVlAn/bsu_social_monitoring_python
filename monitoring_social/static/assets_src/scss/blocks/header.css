@@ -6,4 +6,8 @@
     display: flex;
     align-items: center;
     height: 100%;
+
+    @media (--tablet2) {
+        padding-left: 75px;
+    }
 }

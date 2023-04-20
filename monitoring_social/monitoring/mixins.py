@@ -9,7 +9,7 @@ def generate_base_menu():
         {
             'name': 'Настройки',
             'code': 'settings',
-            'url': '#',
+            'url': '/settings',
             'active': False
         },
     ]

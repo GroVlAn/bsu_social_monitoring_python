@@ -80,7 +80,7 @@
     display: block;
     position: absolute;
     left: 0;
-    top: 23px;
+    top: 21px;
     height: 8px;
     width: 100%;
     background: #212223;
@@ -97,7 +97,7 @@
 
 .Icon.open span:nth-child(1) {
     left: 3px;
-    top: 15px;
+    top: 13px;
 }
 
 .Icon.open span:nth-child(2) {
@@ -106,7 +106,7 @@
 
 .Icon.open span:nth-child(3) {
     left: 20px;
-    top: 31px;
+    top: 29px;
 }
 
 .Icon span:nth-child(1),
@@ -115,7 +115,7 @@
 }
 
 .Icon span:nth-child(1) {
-    top: 12px;
+    top: 10px;
     width: 60%;
     transform: rotate(45deg);
 }
@@ -125,7 +125,7 @@
 }
 
 .Icon span:nth-child(3) {
-    top: 32px;
+    top: 30px;
     width: 65%;
     transform: rotate(-45deg);
 }
@@ -150,19 +150,19 @@
     display: block;
     width: 100%;
     padding: 12px 10px;
-    background-color: rgba(209, 213, 219, 1);
+    background-color: #8e76f6;
     font-weight: 500;
     font-size: 16px;
-    color: #374151;
+    color: #FFFFFF;
     border-radius: 10px;
     transition: .15s;
 
     &.active {
-        background-color: rgb(176, 181, 187);
+        background-color: #7A5CFA;
     }
 
     &:hover {
-        background-color: rgb(176, 181, 187);
+        background-color: #7A5CFA;
     }
 }
 

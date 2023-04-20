@@ -9,6 +9,7 @@
 
 @import "./blocks/forms/auth.css";
 @import "./blocks/components/menu.css";
+@import "./blocks/components/default_form.css";
 @import "./blocks/header.css";
 
 @import "./blocks/monitoring/alalyzed_items_table.css";

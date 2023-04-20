@@ -5,12 +5,18 @@ input[type=email], input[type=number], input[type=password], input[type=tel], in
     transition: .3s ease-in;
 }
 input[type=email], input[type=number], input[type=password], input[type=tel], input[type=text], select, textarea {
-    border: 3px solid #374151;
-    border-radius: 17px;
+    border: 1px solid #CCCCCC;
+    border-radius: 8px;
     height: 48px;
     font-weight: 300;
     background-color: #fff;
     box-sizing: border-box;
     color: #3f5765;
     font-size: 2.4rem;
+    width: 100%;
+    min-width: 262px;
+}
+
+textarea {
+    min-height: 150px;
 }

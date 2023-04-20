@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="constructor_blocs">
+        <div class="constructor_bloc this--flex this--sb">
+            <div class="monitoring__name this--flex">
+                {{ result.name_group }}
+            </div>
+
+            <a href="{% url 'create_analyzed_item' %}" class="btn">Добавить</a>
+        </div>
+    </div>
+    <div class="constructor_blocs">
+        <div class="constructor_bloc">
+            {% include 'views/monitoring/detail_list.html' %}
+        </div>
+    </div>
+{% endblock %}

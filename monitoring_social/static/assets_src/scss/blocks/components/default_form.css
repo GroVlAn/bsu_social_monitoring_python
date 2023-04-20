@@ -1,0 +1,15 @@
+.default_form__wrapper {
+    padding: 0 35px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.default_form {
+    min-width: 300px;
+    width: 100%;
+}
+
+.default_form__fields {
+    margin-bottom: 32px;
+}

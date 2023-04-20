@@ -417,12 +417,21 @@ body {
     position: relative;
     width: 98%;
     background: #F8F8F8;
-    border-radius: 61px;
+    border-radius: 8px;
     padding: 40px;
 
     &.this--auth {
-        width: 60%;
         height: auto;
+
+        @media (--tablet2Max) {
+            width: 60%;
+        }
+        @media (--tablet2) {
+            width: 80%;
+        }
+        @media (--mobile) {
+            width: 100%;
+        }
     }
 }
 
@@ -432,7 +441,7 @@ body {
 }
 
 .main__content {
-    background-color: #d1e2f8;
+    background-color: #e4defe;
     height: 100%;
     padding: 25px;
 
@@ -450,4 +459,5 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #e4defe;
 }

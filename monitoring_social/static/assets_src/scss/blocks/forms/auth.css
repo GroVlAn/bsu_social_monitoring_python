@@ -1,5 +1,6 @@
 .sign__title {
     color: #374151;
+    padding-bottom: 20px;
 }
 
 .auth {
@@ -8,6 +9,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+
+}
+
+.auth__form {
+    width: 100%;
 }
 
 .auth__wrapper {
@@ -17,8 +24,32 @@
     justify-content: center;
 }
 
-.auth__form {
-    width: 60%;
+.auth__fields {
+    display: flex;
+
+    @media (--tablet2Max) {
+        margin-left: -15px;
+    }
+    @media (--tablet2) {
+        flex-wrap: wrap;
+    }
+}
+
+.auth__field {
+    width: 100%;
+
+    &.this--1_2 {
+        @media (--tablet2Max) {
+            width: calc(50% - 15px);
+        }
+        @media (--tablet2) {
+            width: 100%;
+        }
+    }
+
+    @media (--tablet2Max) {
+        margin-left: 15px;
+    }
 }
 
 .auth__label {
@@ -48,8 +79,11 @@
 
 .auth__btn {
     display: flex;
-    justify-content: center;
     margin-top: 20px;
+
+    @media (--mobileMax) {
+        justify-content: center;
+    }
 }
 
 .logout {
@@ -82,4 +116,8 @@
     &:hover {
         color: #374151;
     }
+}
+
+.logout__name {
+    color: #7A5CFA;
 }

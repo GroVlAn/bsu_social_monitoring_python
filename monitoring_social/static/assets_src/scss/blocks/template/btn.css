@@ -1,9 +1,13 @@
 .btn {
-    background-color: rgb(102, 103, 103);
-    border: 1px solid rgb(102, 103, 103);
-    border-radius: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #7A5CFA;
+    border: 1px solid #7A5CFA;
+    border-radius: 8px;
     color: #fff;
     cursor: pointer;
+    min-width: 262px;
     min-height: 48px;
     padding: 4px 4.5rem;
     overflow: hidden;
@@ -13,7 +17,22 @@
     font-weight: 700;
     transition: .15s;
 
-    &:hover {
-        background-color: rgb(58, 59, 59);
+    &.this--full {
+        width: 100%;
     }
+
+    &:hover {
+        background-color: #FFFFFF;
+        color: #7A5CFA;
+    }
+
+    @media (--mobile) {
+        font-size: 18px;
+    }
+}
+
+a.btn {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }

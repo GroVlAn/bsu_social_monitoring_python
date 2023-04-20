@@ -9,7 +9,7 @@ from monitoring.services.organization_service import create_organization
 class OrganizationView(BaseMixin, CreateView):
     form_class = OrganizationForm
     title = 'Создание организации'
-    template_name = 'monitoring/organization/create/index.html'
+    template_name = 'pages/organization/create/index.html'
     success_url = 'main'
 
     def get_context_data(self, *args, object_list=None, **kwargs):

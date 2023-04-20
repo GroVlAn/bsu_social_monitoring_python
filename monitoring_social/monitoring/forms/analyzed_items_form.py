@@ -3,11 +3,34 @@ from monitoring.models_db.analyzed_items import *
 
 
 class GroupAnalyzedItemsForm(forms.ModelForm):
+    ru_name = forms.CharField(
+        label='Название',
+        widget=forms.TextInput(),
+        required=True
+    )
+
+    level = forms.IntegerField(
+        label='Уровень',
+        initial=None
+    )
+
+    organization = forms.ModelChoiceField(
+        queryset=Organization.objects.all(),
+        label='Организация',
+        empty_label='Выбрать'
+    )
+
     class Meta:
         model = GroupAnalyzedItems
-        fields = '__all__'
+        fields = [
+            'ru_name',
+            'level',
+            'organization'
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'group_analyzed_items__input'})
+            'ru_name': forms.TextInput(attrs={'class': 'group_analyzed_items__input'}),
+            'level': forms.TextInput(attrs={'class': 'group_analyzed_items__input'}),
+            'organization': forms.Select(attrs={'class': 'group_analyzed_items__input'})
         }
 
 

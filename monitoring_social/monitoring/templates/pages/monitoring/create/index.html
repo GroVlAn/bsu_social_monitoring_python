@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="constructor_blocs this--left">
+        <div class="constructor_bloc this--inline this--b_b_r_0 this--flex this--sb">
+            <a href="javascript:history.go(-1)" class="btn">Назад</a>
+        </div>
+    </div>
+    <div class="constructor_blocs">
+        <div class="constructor_bloc this--flex this--t_l_b_r_0 this--sb">
+            {% include 'components/forms/analysed_item_form.html' %}
+        </div>
+    </div>
+{% endblock %}
