@@ -8,7 +8,11 @@ class OrganizationForm(forms.ModelForm):
 
     def save(self, user=None, commit=True):
         organization = super().save(commit=False)
+        print(organization)
+        if commit:
+            organization.save()
         if user:
+            print(user)
             organization.users.add(user)
         if commit:
             organization.save()

@@ -435,11 +435,6 @@ body {
     }
 }
 
-.main__top_menu {
-    height: 100px;
-    background-color: #fff;
-}
-
 .main__content {
     background-color: #e4defe;
     height: 100%;
@@ -448,10 +443,6 @@ body {
     @media (--tablet2Max) {
         border-top-left-radius: 10px;
     }
-}
-
-.main__top_menu {
-    position: relative;
 }
 
 .container_center {

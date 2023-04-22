@@ -26,20 +26,18 @@ class AnalyzedItemService:
         analysed_item_statistics.save()
 
     @staticmethod
-    def get_list(*, user: User, name_grop: str) -> tuple[Optional[AnalyzedItem]]:
-        organization = Organization.objects.get(users=user)
+    def get_list(*, organization: Organization, name_grop: str) -> tuple[Optional[AnalyzedItem]]:
         group_analyzed_items = GroupAnalyzedItems.objects.get(name=name_grop)
         return tuple(AnalyzedItem.objects
                      .select_related('summary_statistics').order_by('-summary_statistics__score')
                      .filter(organization=organization, group=group_analyzed_items))
 
     @staticmethod
-    def get_all_groups() -> tuple[GroupAnalyzedItems]:
-        return tuple(GroupAnalyzedItems.objects.all())
+    def get_all_groups_by_organization(organization: Organization) -> tuple[GroupAnalyzedItems]:
+        return tuple(GroupAnalyzedItems.objects.filter(organization=organization))
 
     @staticmethod
-    def get_by_group(*, user: User, group: str):
-        organization = Organization.objects.get(users=user)
+    def get_by_group(*, organization: Organization, group: str):
         return tuple(AnalyzedItem.objects.filter(organization=organization, group__name=group))
 
     @staticmethod

@@ -18,7 +18,21 @@
                     </div>
                 </div>
                 <div class="header_name">
-                    <span class="logout__login">Здравствуйте, <span class="logout__name">{{ user.username }}</span></span>
+                    <span class="logout__login">Здравствуйте, <span
+                            class="logout__name">{{ user.username }}</span></span>
+                </div>
+                <div class="header_organization">
+                    <select class="js_organizations_select" data-token="{{ csrf_token }}"
+                            data-url="{% url 'organization_active_change' %}" name="" id="">
+                        {% for organization in organizations %}
+                            <option value="{{ organization.id }}"
+                                    {% if active_organization.id == organization.id %}
+                                    selected
+                                    {% endif %}
+                            >{{ organization.name }}</option>
+                        {% endfor %}
+                        <option value="-1" {% if active_organization is None %} selected {% endif %}>Добавить</option>
+                    </select>
                 </div>
             </div>
             <div class="main__content">

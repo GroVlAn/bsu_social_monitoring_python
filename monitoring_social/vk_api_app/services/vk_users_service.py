@@ -35,7 +35,9 @@ class VkUsersService:
                 vk_summary_statistic.save()
 
     @staticmethod
-    def get_list(user):
-        organization = Organization.objects.get(users=user)
+    def get_list(*, organization):
+        print(organization)
+        if not VkUser.objects.filter(organization=organization):
+            return tuple()
         return tuple(VkUser.objects.filter(organization=organization).
                      select_related('vk_user_summary').order_by('-vk_user_summary__score')[:10])

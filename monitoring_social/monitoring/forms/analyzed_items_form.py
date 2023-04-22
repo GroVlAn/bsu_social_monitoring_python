@@ -20,6 +20,12 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         empty_label='Выбрать'
     )
 
+    def __init__(self, request, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
+        self.fields['organization'].label = 'Организация'
+        self.fields['organization'].empty_label = None
+
     class Meta:
         model = GroupAnalyzedItems
         fields = [
@@ -47,14 +53,12 @@ class AnalyzedItemsForm(forms.ModelForm):
         required=False,
         initial=None
     )
-    organization = forms.ModelChoiceField(
-        queryset=Organization.objects.all(),
-        label='Организация',
-        empty_label=None
-    )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
+        self.fields['organization'].label = 'Организация'
+        self.fields['organization'].empty_label = None
 
     class Meta:
         model = AnalyzedItem

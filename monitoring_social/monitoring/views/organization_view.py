@@ -1,16 +1,21 @@
+import json
+
+from django.core.cache import cache
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect
-from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView
 
 from monitoring.forms.organization_form import OrganizationForm
 from monitoring.mixins import BaseMixin
-from monitoring.services.organization_service import create_organization
+from monitoring.models_db.organization import Organization
 
 
 class OrganizationView(BaseMixin, CreateView):
     form_class = OrganizationForm
     title = 'Создание организации'
     template_name = 'pages/organization/create/index.html'
-    success_url = 'main'
+    success_url = reverse_lazy('monitoring')
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -18,5 +23,27 @@ class OrganizationView(BaseMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def form_valid(self, form):
-        create_organization(self.request, form)
-        return redirect('monitoring')
+        form.save(user=self.request.user)
+        return super().form_valid(form)
+
+
+def change_active_organization(request):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    print(request.headers)
+    if is_ajax:
+        if request.method == 'POST':
+            print(request.POST)
+            data = json.load(request)
+            organization_id = data.get('organization')
+            organization = Organization.objects.get(pk=organization_id)
+            if not organization:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'this Organization: {organization_id}, does not exits'
+                }, status=200)
+            organization_key = f'{request.user.id}_{request.user.username}_organization'
+            cache.delete(organization_key)
+            cache.set(organization_key, organization)
+            return JsonResponse({'success': True}, status=200)
+    else:
+        return HttpResponseBadRequest('Invalid request')

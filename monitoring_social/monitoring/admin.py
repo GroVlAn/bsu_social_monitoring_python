@@ -9,5 +9,9 @@ class GroupAnalyzedItemAdmin(admin.ModelAdmin):
     prepopulated_fields = {'name': ('ru_name',)}
 
 
-admin.site.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name', )}
+
+
+admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(GroupAnalyzedItems, GroupAnalyzedItemAdmin)

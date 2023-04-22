@@ -1,3 +1,7 @@
+from monitoring.services.organization_service import OrganizationService
+from django.core.cache import cache
+
+
 def generate_base_menu():
     return [
         {
@@ -27,5 +31,10 @@ class BaseMixin:
         context['active_menu'] = self.active_menu
         self.menu[self.active_menu]['active'] = True
         context['menu'] = self.menu
+        if self.request.user:
+            organization_key = f'{self.request.user.id}_{self.request.user.username}_organization'
+            organizations = cache.get(organization_key) if cache.get(organization_key) is not None else None
+            context['active_organization'] = organizations
+            context['organizations'] = OrganizationService.get_all_organization(self.request.user)
         context['show_menu'] = self.show_menu
         return context
