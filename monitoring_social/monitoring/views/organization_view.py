@@ -27,6 +27,33 @@ class OrganizationView(BaseMixin, CreateView):
         return super().form_valid(form)
 
 
+class EditOrganizationView(BaseMixin, CreateView):
+    form_class = OrganizationForm
+    title = 'Изменение организации'
+    template_name = 'pages/organization/edit/index.html'
+    success_url = reverse_lazy('monitoring')
+
+    def get_form_kwargs(self):
+        kwargs = super(EditOrganizationView, self).get_form_kwargs()
+        user = self.request.user
+        organization_key = f'{user.id}_{user.username}_organization'
+        organization = cache.get(organization_key)
+        kwargs['organization'] = organization
+        return kwargs
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_base_context(title=self.title)
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        user = self.request.user
+        organization_key = f'{user.id}_{user.username}_organization'
+        organization = cache.get(organization_key)
+        form.save(organization=organization, user=user)
+        return super().form_valid(form)
+
+
 def change_active_organization(request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     print(request.headers)

@@ -5,7 +5,7 @@ from django.views.generic import CreateView, ListView, FormView, TemplateView
 
 from monitoring.forms.analyzed_items_form import AnalyzedItemsForm, GroupAnalyzedItemsForm
 from monitoring.mixins import BaseMixin
-from monitoring.models_db.analyzed_items import GroupAnalyzedItems
+from monitoring.models_db.analyzed_items import GroupAnalyzedItems, AnalyzedItem
 from monitoring.models_db.organization import Organization
 from monitoring.services.analysed_item_service import AnalyzedItemService
 from vk_api_app.models_db.vk_user import VkUser
@@ -19,20 +19,40 @@ class GroupAnalyzedItemsFormView(BaseMixin, FormView):
     template_name = 'pages/monitoring/group/create/index.html'
     success_url = reverse_lazy('monitoring')
 
+    def get_success_url(self):
+        group_id = self.kwargs.get('id')
+        if group_id is not None:
+            return reverse_lazy('group_settings')
+        return reverse_lazy('monitoring')
+
     def get_form_kwargs(self):
         kwargs = super(GroupAnalyzedItemsFormView, self).get_form_kwargs()
         kwargs['request'] = self.request
+        group_id = self.kwargs.get('id')
+        if group_id is not None:
+            group = GroupAnalyzedItems.objects.get(pk=group_id)
+            if group is not None:
+                kwargs['group'] = group
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
-
+        group_id = self.kwargs.get('id')
+        c_def['group_id'] = group_id
+        if group_id is not None:
+            self.success_url = reverse_lazy('group_settings')
         count = GroupAnalyzedItems.objects.distinct().values('ru_name', 'organization').count()
         print(count)
         return dict(list(context.items()) + list(c_def.items()))
 
     def form_valid(self, form):
+        group_id = self.kwargs.get('id')
+        if group_id is not None:
+            group = GroupAnalyzedItems.objects.get(pk=group_id)
+            if group is not None:
+                form.save(group=group)
+                return super().form_valid(form)
         form.save()
         return super().form_valid(form)
 
@@ -41,12 +61,41 @@ class CreateAnalyzedItem(BaseMixin, FormView):
     form_class = AnalyzedItemsForm
     title = 'Новый элемент'
     template_name = 'pages/monitoring/create/index.html'
-    success_url = 'monitoring'
+    success_url = reverse_lazy('monitoring')
+
+    def get_success_url(self):
+        group_id = self.kwargs.get('id')
+        if group_id is not None:
+            return reverse_lazy('analyzed_items_settings')
+        return reverse_lazy('monitoring')
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateAnalyzedItem, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        analyzed_item_id = self.kwargs.get('id')
+        if analyzed_item_id is not None:
+            analyzed_item = AnalyzedItem.objects.get(pk=analyzed_item_id)
+            if analyzed_item:
+                kwargs['analyzed_item'] = analyzed_item
+        return kwargs
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
+        analyzed_item_id = self.kwargs.get('id')
+        c_def['analyzed_item_id'] = analyzed_item_id
         return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        analyzed_item_id = self.kwargs.get('id')
+        print(analyzed_item_id)
+        if analyzed_item_id is not None:
+            analyzed_item = AnalyzedItem.objects.get(pk=analyzed_item_id)
+            if analyzed_item:
+                form.save(analyzed_item=analyzed_item)
+                return super().form_valid(form)
+        form.save()
+        return super().form_valid(form)
 
 
 class MonitoringView(BaseMixin, TemplateView):
@@ -66,13 +115,15 @@ class MonitoringView(BaseMixin, TemplateView):
         c_def['page_menu'] = self.make_monitoring_menu(organization=current_organization)
         return dict(list(context.items()) + list(c_def.items()))
 
-    def make_monitoring_menu(self, *, organization):
+    @staticmethod
+    def make_monitoring_menu(*, organization):
         grops = AnalyzedItemService.get_all_groups_by_organization(organization=organization)
         menu = [{'url': group.name, 'title': group.ru_name} for group in grops]
         menu.append({'url': '/vk/users', 'title': 'Пользователи'})
         return menu
 
-    def get_all_analyzed_items(self, *, organization):
+    @staticmethod
+    def get_all_analyzed_items(*, organization):
         groups = AnalyzedItemService.get_all_groups_by_organization(organization=organization)
         result = ({'name_group': group.ru_name,
                    'analyzed_items': AnalyzedItemService.get_list(

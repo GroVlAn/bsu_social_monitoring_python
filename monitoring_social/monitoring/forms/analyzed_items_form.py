@@ -20,11 +20,28 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         empty_label='Выбрать'
     )
 
-    def __init__(self, request, *args, **kwargs):
+    def __init__(self, request, group: GroupAnalyzedItems=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if group is not None:
+            self.fields['ru_name'].initial = group.ru_name
+            self.fields['level'].initial = group.level
+            self.fields['organization'].initial = group.organization
         self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
         self.fields['organization'].label = 'Организация'
         self.fields['organization'].empty_label = None
+
+    def save(self, group=None, commit=True):
+        if group is None:
+            group = super().save(commit=False)
+        else:
+            group.ru_name = self.cleaned_data['ru_name']
+            group.level = self.cleaned_data['level']
+            group.organization = self.cleaned_data['organization']
+
+        if commit:
+            group.save()
+
+        return group
 
     class Meta:
         model = GroupAnalyzedItems
@@ -54,11 +71,32 @@ class AnalyzedItemsForm(forms.ModelForm):
         initial=None
     )
 
-    def __init__(self, request, *args, **kwargs):
+    def __init__(self, request, analyzed_item: AnalyzedItem = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if analyzed_item is not None:
+            self.fields['group'].initial = analyzed_item.group
+            self.fields['name'].initial = analyzed_item.name
+            self.fields['description'].initial = analyzed_item.description
+            self.fields['parent'].initial = analyzed_item.parent
+            self.fields['organization'].initial = analyzed_item.organization
         self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
         self.fields['organization'].label = 'Организация'
         self.fields['organization'].empty_label = None
+
+    def save(self, analyzed_item: AnalyzedItem = None, commit=True):
+        if analyzed_item is None:
+            analyzed_item = super().save(commit=False)
+        else:
+            analyzed_item.group = self.cleaned_data['group']
+            analyzed_item.name = self.cleaned_data['name']
+            analyzed_item.description = self.cleaned_data['description']
+            analyzed_item.parent = self.cleaned_data['parent']
+            analyzed_item.organization = self.cleaned_data['organization']
+
+        if commit:
+            analyzed_item.save()
+
+        return analyzed_item
 
     class Meta:
         model = AnalyzedItem

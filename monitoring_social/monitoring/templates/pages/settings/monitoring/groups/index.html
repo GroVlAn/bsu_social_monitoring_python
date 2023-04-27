@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Группы</h1>
+    <div class="monitoring">
+        <div class="monitoring__wrapper">
+            <div class="monitoring__data">
+                <table class="monitoring__table">
+                    <thead class="monitoring__thread">
+                    <tr class="monitoring__tr">
+                        <th class="monitoring__th">№</th>
+                        <th class="monitoring__th">Название</th>
+                        <th class="monitoring__th">Уровень</th>
+                        <th class="monitoring__th"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="monitoring__tbody">
+                    {% for group in groups %}
+                        <tr class="monitoring_tr">
+                            <td class="monitoring_td">
+                                {{ forloop.counter }}
+                            </td>
+                            <td class="monitoring_td">
+                                {{ group.ru_name }}
+                            </td>
+                            <td class="monitoring_td">
+                                {{ group.level }}
+                            </td>
+                            <td class="monitoring_td">
+                                <a href="{% url 'edit_group_analyzed_items' id=group.id %}"
+                                   class="btn_dashed">Изменить</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

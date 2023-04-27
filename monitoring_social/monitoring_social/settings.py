@@ -136,14 +136,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 
-CACHE_TTL = 60 * 1500
-
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://127.0.0.1:6379/1',
         'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
-        'KEY_PREFIX': 'bsu_ms'
+        'KEY_PREFIX': 'bsu_ms',
+        'TIMEOUT': None
     }
 }
 
