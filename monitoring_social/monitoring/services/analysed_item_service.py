@@ -38,7 +38,9 @@ class AnalyzedItemService:
 
     @staticmethod
     def get_by_group(*, organization: Organization, group: str):
-        return tuple(AnalyzedItem.objects.filter(organization=organization, group__name=group))
+        return tuple(AnalyzedItem.objects
+                     .filter(organization=organization, group__name=group)
+                     .order_by('-summary_statistics__score'))
 
     @staticmethod
     def _sum_children_statistic(*, analyzed_items: tuple[AnalyzedItem]):
