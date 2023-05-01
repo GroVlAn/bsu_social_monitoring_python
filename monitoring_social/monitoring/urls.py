@@ -9,6 +9,7 @@ from monitoring.views.monitoring_view import (
     start_getting_data_from_vk, CreateAnalyzedItem, GroupAnalyzedItemsFormView)
 from monitoring.views.organization_view import OrganizationView, change_active_organization, EditOrganizationView
 from monitoring.views.settings_view import SettingsPage, UserSettingsView, AnalyzedItemsSettingsView, GroupsSettingsView
+from vk_api_app.views import VkSettingsView
 
 
 urlpatterns = [
@@ -32,4 +33,5 @@ urlpatterns = [
     path('monitoring/grop/create/<int:id>',
          GroupAnalyzedItemsFormView.as_view(template_name='pages/settings/monitoring/groups/edit/index.html'),
          name='edit_group_analyzed_items'),
+    path('settings/vk/', VkSettingsView.as_view(), name='vk_settings')
 ]

@@ -20,15 +20,16 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         empty_label='Выбрать'
     )
 
-    def __init__(self, request, group: GroupAnalyzedItems=None, *args, **kwargs):
+    def __init__(self, request=None, group: GroupAnalyzedItems=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if group is not None:
             self.fields['ru_name'].initial = group.ru_name
             self.fields['level'].initial = group.level
             self.fields['organization'].initial = group.organization
-        self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
-        self.fields['organization'].label = 'Организация'
-        self.fields['organization'].empty_label = None
+        if request is not None:
+            self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
+            self.fields['organization'].label = 'Организация'
+            self.fields['organization'].empty_label = None
 
     def save(self, group=None, commit=True):
         if group is None:

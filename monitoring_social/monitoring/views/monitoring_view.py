@@ -88,10 +88,9 @@ class CreateAnalyzedItem(BaseMixin, FormView):
 
     def form_valid(self, form):
         analyzed_item_id = self.kwargs.get('id')
-        print(analyzed_item_id)
         if analyzed_item_id is not None:
             analyzed_item = AnalyzedItem.objects.get(pk=analyzed_item_id)
-            if analyzed_item:
+            if analyzed_item is not None:
                 form.save(analyzed_item=analyzed_item)
                 return super().form_valid(form)
         form.save()
