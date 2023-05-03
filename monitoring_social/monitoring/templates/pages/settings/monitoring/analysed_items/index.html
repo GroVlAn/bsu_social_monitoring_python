@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="constructor_blocs">
+        <div class="constructor_block this--flex this--sb">
+            <form action="{% url 'get_vk_api' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn" value="Получить данные">
+            </form>
+        </div>
+    </div>
     {% for item in result %}
         <h1>{{ item.group.ru_name }}</h1>
         <div class="monitoring">

@@ -9,15 +9,16 @@ def _to_json_item(item):
     return UserInfo.parse_raw(vk_users_info_json)
 
 
-class VkUsersHandler(VkDataAbstractHandler):
+class VkUsersHandler:
 
-    def __init__(self, *, vk_auth):
-        super().__init__(vk_auth=vk_auth)
+    def __init__(self, *, vk, group_id):
+        self._vk = vk
+        self._group_id = group_id
 
     def getUsersIds(self, post_id: int):
         vk_users_ids = self._vk.likes.getList(
             type='post',
-            owner_id=-102554211,
+            owner_id=-self._group_id,
             item_id=post_id)
         vk_users_ids_json = json.dumps(vk_users_ids)
         vk_users_ids_object = UsersId.parse_raw(vk_users_ids_json)
@@ -27,7 +28,7 @@ class VkUsersHandler(VkDataAbstractHandler):
     def getUserInfo(self, user_id):
         vk_users_info = self._vk.users.get(
             type='post',
-            owner_id=-102554211,
+            owner_id=-self._group_id,
             user_ids=user_id,
             lang='RUS')
         vk_users_info_objects = [_to_json_item(item) for item in vk_users_info]

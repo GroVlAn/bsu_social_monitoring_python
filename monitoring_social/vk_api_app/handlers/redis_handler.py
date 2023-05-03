@@ -25,7 +25,7 @@ class RedisHandler:
 
         self.redis_client.set(name=key, value=current_value + 1)
 
-    def save_key_value(self, data: dict) -> None:
+    def save_key_value(self, data: list) -> None:
         """
         Save data in radis
         (data must be dictionary and contains key and value  keys of dictionary)
