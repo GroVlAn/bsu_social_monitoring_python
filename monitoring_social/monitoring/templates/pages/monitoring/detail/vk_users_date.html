@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="monitoring__name">
+        Пользователи
+    </div>
+
+    <div class="constructor_blocs">
+        <div class="constructor_block">
+            <div class="monitoring">
+                <div class="monitoring__wrapper">
+                    <div class="monitoring__data">
+                        <table class="monitoring__table">
+                            <thead class="monitoring__thread">
+                            <tr class="monitoring__tr">
+                                <th class="monitoring__th">№</th>
+                                <th class="monitoring__th">Имя</th>
+                                <th class="monitoring__th">Активность</th>
+                            </thead>
+                            <tbody class="monitoring__tbody">
+                            {% for item in result %}
+                                <tr class="monitoring_tr">
+                                    <td class="monitoring_td">
+                                        {{ forloop.counter }}
+                                    </td>
+                                    <td class="monitoring_td">
+                                        {{ item.vk_user.first_name }} {{ item.vk_user.last_name }}
+                                    </td>
+                                    <td class="monitoring_td">
+                                        {{ item.activity }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.cache import cache
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -132,7 +134,25 @@ class MonitoringView(BaseMixin, TemplateView):
         return result
 
 
-class MonitoringVkUsers(BaseMixin, ListView):
+class MonitoringVkUsersByDateView(BaseMixin, TemplateView):
+    title = 'Пользователи Вконтакте по дате'
+    template_name = 'pages/monitoring/detail/vk_users_date.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_base_context(title=self.title)
+        user = self.request.user
+        organization_key = f'{user.id}_{user.username}_organization'
+        current_organization = cache.get(organization_key)
+        date_from = datetime.datetime(2023, 4, 1)
+        c_def['result'] = VkUsersService.get_all_by_date(
+            organization=current_organization,
+            date_from=date_from
+        )
+        return dict(list(context.items()) + list(c_def.items()))
+
+
+class MonitoringVkUsersView(BaseMixin, ListView):
     model = VkUser
     title = 'Пользователи Вконтакте'
     template_name = 'pages/monitoring/detail/vk_users.html'
@@ -145,6 +165,35 @@ class MonitoringVkUsers(BaseMixin, ListView):
         current_organization = cache.get(key_organization)
         print(current_organization)
         c_def['vk_users'] = VkUsersService.get_list(organization=current_organization)
+        return dict(list(context.items()) + list(c_def.items()))
+
+
+class MonitoringDetailByDate(BaseMixin, TemplateView):
+    title = 'Анализируемы элементы по дате'
+    template_name = 'pages/monitoring/detail/date/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_base_context(title=self.title)
+        group_slug = self.kwargs.get('group_slug')
+        group_ru_name = GroupAnalyzedItems.objects.get(name=group_slug).ru_name
+        user = self.request.user
+        organization_key = f'{user.id}_{user.username}_organization'
+        current_organization = cache.get(organization_key)
+        date_from = datetime.datetime(2023, 4, 1)
+        analyzed_items_result = AnalyzedItemService.get_all_by_date(
+            organization=current_organization,
+            group_name=group_slug,
+            date_from=date_from
+        )
+        filtered_analyzed_items = filter(
+            lambda ai: ai['analyzed_item'].group.name == group_slug,
+            analyzed_items_result
+        )
+        c_def['result'] = {
+            'name_group': group_ru_name,
+            'analyzed_items': filtered_analyzed_items
+        }
         return dict(list(context.items()) + list(c_def.items()))
 
 
@@ -170,7 +219,7 @@ class MonitoringDetailView(BaseMixin, ListView):
 
         c_def['result'] = {'name_group': group_ru_name,
                            'analyzed_items': analyzed_items}
-        return c_def
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 def start_getting_data_from_vk(request):

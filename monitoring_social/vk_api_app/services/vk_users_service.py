@@ -1,3 +1,6 @@
+from dateutil.relativedelta import relativedelta
+from django.db.models import Q
+
 from monitoring.models_db.organization import Organization
 from vk_api_app.models_db.vk_user import VkUserStatistics, VkUser, VkUserSummaryStatistics
 
@@ -14,6 +17,27 @@ class VkUsersService:
         activity.save()
 
         return activity
+
+    @staticmethod
+    def get_all_by_date(organization: Organization, date_from, date_to=None):
+        vk_users = tuple(VkUser.objects.filter(organization=organization))
+        if date_to is None:
+            date_to = date_from + relativedelta(months=1)
+        result = []
+        for vk_user in vk_users:
+            vk_user_statistics = tuple(VkUserStatistics.objects.filter(
+                Q(owner=vk_user) &
+                Q(date_from__gte=date_from) &
+                Q(date_to__lte=date_to)
+            ))
+            activity = sum((int(statistic.activity) for statistic in vk_user_statistics))
+            data = {
+                'vk_user': vk_user,
+                'activity': activity
+            }
+            result.append(data)
+
+        return sorted(result, key=lambda r: r['activity'], reverse=True)[:10]
 
     @staticmethod
     def count_summary(organization: Organization) -> None:

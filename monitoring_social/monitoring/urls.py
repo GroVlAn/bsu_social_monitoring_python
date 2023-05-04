@@ -4,9 +4,10 @@ from monitoring import views
 from monitoring.views.main_view import index
 from monitoring.views.monitoring_view import (
     MonitoringView,
-    MonitoringVkUsers,
+    MonitoringVkUsersView,
     MonitoringDetailView,
-    start_getting_data_from_vk, CreateAnalyzedItem, GroupAnalyzedItemsFormView)
+    start_getting_data_from_vk, CreateAnalyzedItem, GroupAnalyzedItemsFormView, MonitoringDetailByDate,
+    MonitoringVkUsersByDateView)
 from monitoring.views.organization_view import OrganizationView, change_active_organization, EditOrganizationView
 from monitoring.views.settings_view import SettingsPage, UserSettingsView, AnalyzedItemsSettingsView, GroupsSettingsView
 from vk_api_app.views import VkSettingsView
@@ -17,8 +18,10 @@ urlpatterns = [
     path('monitoring/organization/create/', OrganizationView.as_view(), name='create_organization'),
     path('settings/organization/edit/', EditOrganizationView.as_view(), name='edit_organization'),
     path('monitoring/', MonitoringView.as_view(), name='monitoring'),
-    path('vk/users/', MonitoringVkUsers.as_view(), name='vk_users'),
+    path('vk/users/', MonitoringVkUsersView.as_view(), name='vk_users'),
+    path('vk/users/date/', MonitoringVkUsersByDateView.as_view(), name='vk_users_date'),
     path('monitoring/<slug:group_slug>', MonitoringDetailView.as_view(), name='monitoring_detail'),
+    path('monitoring/date/<slug:group_slug>', MonitoringDetailByDate.as_view(), name='monitoring_detail_by_date'),
     path('vk/get/data', start_getting_data_from_vk, name='get_vk_api'),
     path('settings/', SettingsPage.as_view(), name='settings'),
     path('monitoring/create/', CreateAnalyzedItem.as_view(), name='create_analyzed_item'),

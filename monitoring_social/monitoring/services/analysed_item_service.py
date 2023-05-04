@@ -1,13 +1,13 @@
 from typing import Optional
-
-from django.contrib.auth.models import User
+import datetime
+from dateutil.relativedelta import relativedelta
 
 from monitoring.models_db.analyzed_items import AnalyzedItemsSummaryStatistics, AnalyzedItem, GroupAnalyzedItems, \
     AnalyzedItemKeywords
 from monitoring.models_db.organization import Organization
 from monitoring.models_db.statistics import Statistics
 from vk_api_app.models_db.vk_post import VkPost
-
+from django.db.models import Q
 
 class AnalyzedItemService:
 
@@ -56,6 +56,47 @@ class AnalyzedItemService:
                 parent_summary.score = str(int(parent_summary.score) + int(children_summary.score))
 
                 parent_summary.save()
+
+    # TODO fix it
+    @staticmethod
+    def get_all_by_date(organization: Organization, group_name: str, date_from, date_to=None):
+        group_analyzed_items = GroupAnalyzedItems.objects.get(name=group_name)
+        if date_to is None:
+            date_to = date_from + relativedelta(months=1)
+        analyzed_items = tuple(AnalyzedItem.objects.filter(organization=organization,
+                                                           ))
+        result = []
+        for analyzed_item in analyzed_items:
+            statistics = Statistics.objects.filter(
+                Q(owner=analyzed_item) &
+                Q(date_from__gte=date_from) &
+                Q(date_to__lte=date_to)
+            )
+            likes = sum([int(statistic.likes) for statistic in statistics])
+            comments = sum([int(statistic.comments) for statistic in statistics])
+            reposts = sum([int(statistic.reposts) for statistic in statistics])
+            score = likes + comments + reposts
+
+            data = {
+                'analyzed_item': analyzed_item,
+                'likes': likes,
+                'comments': comments,
+                'reposts': reposts,
+                'score': score
+            }
+            result.append(data)
+        for item in result:
+            print(item['analyzed_item'].parent_id)
+            if item['analyzed_item'].parent_id:
+                parent_index = next((index
+                                     for (index, value) in enumerate(result)
+                                     if value['analyzed_item'].id == item['analyzed_item'].parent_id
+                                     ), None)
+                result[parent_index]['likes'] += item['likes']
+                result[parent_index]['comments'] += item['comments']
+                result[parent_index]['reposts'] += item['reposts']
+                result[parent_index]['score'] += item['score']
+        return sorted(result, key=lambda ai: ai['score'], reverse=True)
 
     @staticmethod
     def count_summary(organization):
