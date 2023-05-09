@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from django.core.cache import cache
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from .forms import *
 
 
@@ -27,10 +27,10 @@ class SignInPage(LoginView):
 
     def get_success_url(self):
         user = self.request.user
-        organization_key = f'{user.id}_{user.username}_organization'
-        organization = Organization.objects.filter(users=user).order_by('time_create')
-        if organization:
-            cache.set(organization_key, list(organization)[0])
+        team_key = f'{user.id}_{user.username}_team'
+        team = Team.objects.filter(users=user).order_by('time_create')
+        if team:
+            cache.set(team_key, list(team)[0])
         return reverse_lazy('monitoring')
 
 

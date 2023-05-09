@@ -3760,12 +3760,12 @@ closeMenu.addEventListener('click', function (el) {
   menu.classList.toggle('show');
   closeMenu.classList.toggle('open');
 });
-var organizationsSelect = document.querySelector('.js_organizations_select');
-console.log(organizationsSelect);
-organizationsSelect.addEventListener('change', function (e) {
+var teamsSelect = document.querySelector('.js_teams_select');
+console.log(teamsSelect);
+teamsSelect.addEventListener('change', function (e) {
   var target = e.target;
   if (+target.value == -1) {
-    window.location.replace('/monitoring/organization/create');
+    window.location.replace('/monitoring/team/create');
   }
   var request = new Request(target.dataset.url, {
     method: 'POST',
@@ -3775,7 +3775,7 @@ organizationsSelect.addEventListener('change', function (e) {
     },
     mode: 'same-origin',
     body: JSON.stringify({
-      'organization': target.value
+      'team': target.value
     })
   });
   fetch(request).then(function (response) {

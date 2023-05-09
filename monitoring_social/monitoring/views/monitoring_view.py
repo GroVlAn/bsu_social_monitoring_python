@@ -8,7 +8,7 @@ from django.views.generic import CreateView, ListView, FormView, TemplateView
 from monitoring.forms.analyzed_items_form import AnalyzedItemsForm, GroupAnalyzedItemsForm
 from monitoring.mixins import BaseMixin
 from monitoring.models_db.analyzed_items import GroupAnalyzedItems, AnalyzedItem
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from monitoring.services.analysed_item_service import AnalyzedItemService
 from vk_api_app.models_db.vk_user import VkUser
 from vk_api_app.services.vk_users_service import VkUsersService
@@ -44,7 +44,7 @@ class GroupAnalyzedItemsFormView(BaseMixin, FormView):
         c_def['group_id'] = group_id
         if group_id is not None:
             self.success_url = reverse_lazy('group_settings')
-        count = GroupAnalyzedItems.objects.distinct().values('ru_name', 'organization').count()
+        count = GroupAnalyzedItems.objects.distinct().values('ru_name', 'team').count()
         print(count)
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -107,28 +107,28 @@ class MonitoringView(BaseMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
         user = self.request.user
-        organization_key = f'{user.id}_{user.username}_organization'
-        current_organization = cache.get(organization_key)
-        print(current_organization)
+        team_key = f'{user.id}_{user.username}_team'
+        current_team = cache.get(team_key)
+        print(current_team)
 
-        c_def['result'] = self.get_all_analyzed_items(organization=current_organization)
-        c_def['vk_users'] = VkUsersService.get_list(organization=current_organization)
-        c_def['page_menu'] = self.make_monitoring_menu(organization=current_organization)
+        c_def['result'] = self.get_all_analyzed_items(team=current_team)
+        c_def['vk_users'] = VkUsersService.get_list(team=current_team)
+        c_def['page_menu'] = self.make_monitoring_menu(team=current_team)
         return dict(list(context.items()) + list(c_def.items()))
 
     @staticmethod
-    def make_monitoring_menu(*, organization):
-        grops = AnalyzedItemService.get_all_groups_by_organization(organization=organization)
+    def make_monitoring_menu(*, team):
+        grops = AnalyzedItemService.get_all_groups_by_team(team=team)
         menu = [{'url': group.name, 'title': group.ru_name} for group in grops]
         menu.append({'url': '/vk/users', 'title': 'Пользователи'})
         return menu
 
     @staticmethod
-    def get_all_analyzed_items(*, organization):
-        groups = AnalyzedItemService.get_all_groups_by_organization(organization=organization)
+    def get_all_analyzed_items(*, team):
+        groups = AnalyzedItemService.get_all_groups_by_team(team=team)
         result = ({'name_group': group.ru_name,
                    'analyzed_items': AnalyzedItemService.get_list(
-                       organization=organization,
+                       team=team,
                        name_grop=group.name)
                    } for group in groups)
         return result
@@ -142,11 +142,11 @@ class MonitoringVkUsersByDateView(BaseMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
         user = self.request.user
-        organization_key = f'{user.id}_{user.username}_organization'
-        current_organization = cache.get(organization_key)
+        team_key = f'{user.id}_{user.username}_team'
+        current_team = cache.get(team_key)
         date_from = datetime.datetime(2023, 4, 1)
         c_def['result'] = VkUsersService.get_all_by_date(
-            organization=current_organization,
+            team=current_team,
             date_from=date_from
         )
         return dict(list(context.items()) + list(c_def.items()))
@@ -161,10 +161,9 @@ class MonitoringVkUsersView(BaseMixin, ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
         user = self.request.user
-        key_organization = f'{user.id}_{user.username}_organization'
-        current_organization = cache.get(key_organization)
-        print(current_organization)
-        c_def['vk_users'] = VkUsersService.get_list(organization=current_organization)
+        key_team = f'{user.id}_{user.username}_team'
+        current_team = cache.get(key_team)
+        c_def['vk_users'] = VkUsersService.get_list(team=current_team)
         return dict(list(context.items()) + list(c_def.items()))
 
 
@@ -178,11 +177,11 @@ class MonitoringDetailByDate(BaseMixin, TemplateView):
         group_slug = self.kwargs.get('group_slug')
         group_ru_name = GroupAnalyzedItems.objects.get(name=group_slug).ru_name
         user = self.request.user
-        organization_key = f'{user.id}_{user.username}_organization'
-        current_organization = cache.get(organization_key)
+        team_key = f'{user.id}_{user.username}_team'
+        current_team = cache.get(team_key)
         date_from = datetime.datetime(2023, 4, 1)
         analyzed_items_result = AnalyzedItemService.get_all_by_date(
-            organization=current_organization,
+            team=current_team,
             group_name=group_slug,
             date_from=date_from
         )
@@ -208,11 +207,11 @@ class MonitoringDetailView(BaseMixin, ListView):
         c_def = self.get_base_context(title=self.title)
         group = self.kwargs.get('group_slug')
         user = self.request.user
-        key_organization = f'{user.id}_{user.username}_organization'
-        current_organization = cache.get(key_organization)
+        key_team = f'{user.id}_{user.username}_team'
+        current_team = cache.get(key_team)
         print(group)
         analyzed_items = AnalyzedItemService.get_by_group(
-            organization=current_organization,
+            team=current_team,
             group=group
         )
         group_ru_name = GroupAnalyzedItems.objects.get(name=group).ru_name
@@ -224,8 +223,8 @@ class MonitoringDetailView(BaseMixin, ListView):
 
 def start_getting_data_from_vk(request):
     if request.method == 'POST' and request.user.is_authenticated:
-        organization = Organization.objects.get(users=request.user)
-        start_get_data.delay({'organization_id': organization.id,
+        team = Team.objects.get(users=request.user)
+        start_get_data.delay({'team_id': team.id,
                               'user_id': request.user.id,
                               'user_name': request.user.username})
     return redirect('monitoring')

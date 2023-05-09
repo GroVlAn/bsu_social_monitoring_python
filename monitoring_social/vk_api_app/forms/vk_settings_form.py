@@ -1,6 +1,6 @@
 from django import forms
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from vk_api_app.models_db.vk_settings import VkSettings
 
 
@@ -13,9 +13,9 @@ class VkSettingsForm(forms.ModelForm):
         label='Id группы вконтакте',
         widget=forms.NumberInput()
     )
-    organization = forms.ModelChoiceField(
+    team = forms.ModelChoiceField(
         queryset=None,
-        label='Организация',
+        label='Команда',
         empty_label='Выбрать'
     )
 
@@ -24,9 +24,9 @@ class VkSettingsForm(forms.ModelForm):
         if vk_settings:
             self.fields['token'].initial = vk_settings.token
             self.fields['group_id'].initial = vk_settings.group_id
-            self.fields['organization'].initial = vk_settings.organization
+            self.fields['team'].initial = vk_settings.team
         if request is not None:
-            self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
+            self.fields['team'].queryset = Team.objects.filter(users=request.user)
 
     def save(self, vk_settings: VkSettings = None, commit=True):
         if not vk_settings:
@@ -34,7 +34,7 @@ class VkSettingsForm(forms.ModelForm):
         else:
             vk_settings.token = self.cleaned_data['token']
             vk_settings.group_id = self.cleaned_data['group_id']
-            vk_settings.organization = self.cleaned_data['organization']
+            vk_settings.team = self.cleaned_data['team']
 
         if commit:
             vk_settings.save()
@@ -46,5 +46,5 @@ class VkSettingsForm(forms.ModelForm):
         fields = [
             'token',
             'group_id',
-            'organization'
+            'team'
         ]

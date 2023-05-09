@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="sign__title">Создание организации</h1>
+    <h1 class="sign__title">Создание команды</h1>
     <div class="constructor_blocs">
         <div class="constructor_block">
             <div class="default_form__wrapper">
-                <form class="default_form" action="{% url 'edit_organization' %}" method="POST">
+                <form class="default_form" action="{% url 'edit_team' %}" method="POST">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="default_form__fields">

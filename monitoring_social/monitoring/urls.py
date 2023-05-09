@@ -8,15 +8,15 @@ from monitoring.views.monitoring_view import (
     MonitoringDetailView,
     start_getting_data_from_vk, CreateAnalyzedItem, GroupAnalyzedItemsFormView, MonitoringDetailByDate,
     MonitoringVkUsersByDateView)
-from monitoring.views.organization_view import OrganizationView, change_active_organization, EditOrganizationView
+from monitoring.views.team_view import TeamView, change_active_team, EditTeamView
 from monitoring.views.settings_view import SettingsPage, UserSettingsView, AnalyzedItemsSettingsView, GroupsSettingsView
 from vk_api_app.views import VkSettingsView
 
 
 urlpatterns = [
     path('', index, name='home'),
-    path('monitoring/organization/create/', OrganizationView.as_view(), name='create_organization'),
-    path('settings/organization/edit/', EditOrganizationView.as_view(), name='edit_organization'),
+    path('monitoring/team/create/', TeamView.as_view(), name='create_team'),
+    path('settings/team/edit/', EditTeamView.as_view(), name='edit_team'),
     path('monitoring/', MonitoringView.as_view(), name='monitoring'),
     path('vk/users/', MonitoringVkUsersView.as_view(), name='vk_users'),
     path('vk/users/date/', MonitoringVkUsersByDateView.as_view(), name='vk_users_date'),
@@ -31,8 +31,8 @@ urlpatterns = [
     path('settings/items/edit/<int:id>',
          CreateAnalyzedItem.as_view(template_name='pages/monitoring/edit/index.html'), name='edit_analyzed_item'),
     path('settings/groups/', GroupsSettingsView.as_view(), name='group_settings'),
-    path('monitoring/organization/active/change', change_active_organization,
-         name='organization_active_change'),
+    path('monitoring/team/active/change', change_active_team,
+         name='team_active_change'),
     path('monitoring/grop/create/<int:id>',
          GroupAnalyzedItemsFormView.as_view(template_name='pages/settings/monitoring/groups/edit/index.html'),
          name='edit_group_analyzed_items'),

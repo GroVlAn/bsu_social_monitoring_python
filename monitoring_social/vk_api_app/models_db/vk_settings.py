@@ -1,9 +1,9 @@
 from django.db import models
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 
 
 class VkSettings(models.Model):
     token = models.TextField(verbose_name='Токен авторизации vk')
     group_id = models.IntegerField(verbose_name='Id группы в vk')
-    organization = models.OneToOneField(Organization, on_delete=models.CASCADE)
+    team = models.OneToOneField(Team, on_delete=models.CASCADE)

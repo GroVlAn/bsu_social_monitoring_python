@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 
 from monitoring.models_db.analyzed_items import AnalyzedItemsSummaryStatistics, AnalyzedItem, GroupAnalyzedItems, \
     AnalyzedItemKeywords
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from monitoring.models_db.statistics import Statistics
 from vk_api_app.models_db.vk_post import VkPost
 from django.db.models import Q
@@ -26,20 +26,20 @@ class AnalyzedItemService:
         analysed_item_statistics.save()
 
     @staticmethod
-    def get_list(*, organization: Organization, name_grop: str) -> tuple[Optional[AnalyzedItem]]:
+    def get_list(*, team: Team, name_grop: str) -> tuple[Optional[AnalyzedItem]]:
         group_analyzed_items = GroupAnalyzedItems.objects.get(name=name_grop)
         return tuple(AnalyzedItem.objects
                      .select_related('summary_statistics').order_by('-summary_statistics__score')
-                     .filter(organization=organization, group=group_analyzed_items))
+                     .filter(team=team, group=group_analyzed_items))
 
     @staticmethod
-    def get_all_groups_by_organization(organization: Organization) -> tuple[GroupAnalyzedItems]:
-        return tuple(GroupAnalyzedItems.objects.filter(organization=organization))
+    def get_all_groups_by_team(team: Team) -> tuple[GroupAnalyzedItems]:
+        return tuple(GroupAnalyzedItems.objects.filter(team=team))
 
     @staticmethod
-    def get_by_group(*, organization: Organization, group: str):
+    def get_by_group(*, team: Team, group: str):
         return tuple(AnalyzedItem.objects
-                     .filter(organization=organization, group__name=group)
+                     .filter(team=team, group__name=group)
                      .order_by('-summary_statistics__score'))
 
     @staticmethod
@@ -59,11 +59,11 @@ class AnalyzedItemService:
 
     # TODO fix it
     @staticmethod
-    def get_all_by_date(organization: Organization, group_name: str, date_from, date_to=None):
+    def get_all_by_date(team: Team, group_name: str, date_from, date_to=None):
         group_analyzed_items = GroupAnalyzedItems.objects.get(name=group_name)
         if date_to is None:
             date_to = date_from + relativedelta(months=1)
-        analyzed_items = tuple(AnalyzedItem.objects.filter(organization=organization,
+        analyzed_items = tuple(AnalyzedItem.objects.filter(team=team,
                                                            ))
         result = []
         for analyzed_item in analyzed_items:
@@ -99,8 +99,8 @@ class AnalyzedItemService:
         return sorted(result, key=lambda ai: ai['score'], reverse=True)
 
     @staticmethod
-    def count_summary(organization):
-        analyzed_items = tuple(AnalyzedItem.objects.filter(organization=organization))
+    def count_summary(team):
+        analyzed_items = tuple(AnalyzedItem.objects.filter(team=team))
 
         for analyzed_item in analyzed_items:
             statistics_list = tuple(Statistics.objects.filter(owner=analyzed_item))

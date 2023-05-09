@@ -1,6 +1,6 @@
 import time
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from vk_api_app.handlers.redis_handler import RedisHandler
 from vk_api_app.handlers.vk_handler import VkHandler, VkHandlerType
 from vk_api_app.handlers.vk_validation_handler import VkValidationHandler
@@ -15,12 +15,12 @@ class VkAPIUsersService(VkAPIAbstractService):
 
     def __init__(self, *,
                  redis_handler: RedisHandler,
-                 organization_id: int,
+                 team_id: int,
                  vk_handler: VkHandler,
                  vk_validation: VkValidationHandler):
         super().__init__(redis_handler=redis_handler, vk_handler=vk_handler, vk_validation=vk_validation)
         self.vk_users_handler = self.vk_handler.create_handler(handler_type=VkHandlerType.USER)
-        self._vk_ignore_users = list(VkIgnoreUsers.objects.all().filter(organization=organization_id))
+        self._vk_ignore_users = list(VkIgnoreUsers.objects.all().filter(team=team_id))
 
     def get_users(self, *, post_id: int) -> None:
         vk_users = self.vk_users_handler.getUsersIds(post_id)
@@ -42,7 +42,7 @@ class VkAPIUsersService(VkAPIAbstractService):
 
         self._redis_handler.save_single_value(data=json_user)
 
-    def save_users(self, *, organization: Organization) -> None:
+    def save_users(self, *, team: Team) -> None:
         users = self._redis_handler.get_users()
 
         for user in users:
@@ -62,10 +62,10 @@ class VkAPIUsersService(VkAPIAbstractService):
                         date=self._vk_validation.date_before,
                         owner_statistics=user_id)
 
-                VkUserStatisticsService.create(statistics=statistics, owner=user_id, organization=organization)
+                VkUserStatisticsService.create(statistics=statistics, owner=user_id, team=team)
 
-    def save_users_info(self, organization_id: int) -> None:
-        users = VkUsersService.get_tuple_by_organization(organization_id=organization_id)
+    def save_users_info(self, team_id: int) -> None:
+        users = VkUsersService.get_tuple_by_team(team_id=team_id)
 
         for user in users:
             user_id = user.id_user

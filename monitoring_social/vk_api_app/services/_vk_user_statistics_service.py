@@ -2,13 +2,13 @@ from datetime import datetime
 
 import pytz
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from vk_api_app.models_db.vk_user import VkUser, VkUserStatistics
 
 
 class VkUserStatisticsService:
     @staticmethod
-    def create(*, statistics: dict, owner: int, organization: Organization) -> None:
+    def create(*, statistics: dict, owner: int, team: Team) -> None:
         if VkUserStatistics.objects.filter(date_from=statistics['date_from'], owner__id_user=owner):
             return
 
@@ -17,11 +17,11 @@ class VkUserStatisticsService:
         formatted_datetime_from = aware_datetime_from.strftime('%Y-%m-%d %H:%M:%S.%f%z' )
         formatted_datetime_to = aware_datetime_to.strftime('%Y-%m-%d %H:%M:%S.%f%z')
 
-        if not VkUser.objects.filter(id_user=owner, organization=organization).exists():
-            vk_user = VkUser(id_user=owner, organization=organization)
+        if not VkUser.objects.filter(id_user=owner, team=team).exists():
+            vk_user = VkUser(id_user=owner, team=team)
             vk_user.save()
         else:
-            vk_user = VkUser.objects.get(id_user=owner, organization=organization)
+            vk_user = VkUser.objects.get(id_user=owner, team=team)
 
         vk_user_statistics = VkUserStatistics(
             activity=statistics['activity'],

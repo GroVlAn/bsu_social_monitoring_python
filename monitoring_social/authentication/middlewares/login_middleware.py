@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from rolepermissions.checkers import has_role
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 
 
 class RequireLoginMiddleware:

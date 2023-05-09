@@ -24,7 +24,7 @@ class SettingsPage(BaseMixin, TemplateView):
     def get_menu():
         return [
             {'url': 'user', 'title': 'Пользователь'},
-            {'url': 'organization/edit/', 'title': 'Организация'},
+            {'url': 'team/edit/', 'title': 'Команда'},
             {'url': 'monitoring/items/', 'title': 'Анализируемые элементы'},
             {'url': 'groups/', 'title': 'Группы анализируемых элементов'},
             {'url': 'vk/', 'title': 'Настройки приложения Вконтакте'}
@@ -72,17 +72,17 @@ class AnalyzedItemsSettingsView(BaseMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
         user = self.request.user
-        organization_key = f'{user.id}_{user.username}_organization'
-        current_organization = cache.get(organization_key)
-        c_def['result'] = self.get_all_analyzed_items(organization=current_organization)
+        team_key = f'{user.id}_{user.username}_team'
+        current_team = cache.get(team_key)
+        c_def['result'] = self.get_all_analyzed_items(team=current_team)
         return dict(list(context.items()) + list(c_def.items()))
 
     @staticmethod
-    def get_all_analyzed_items(*, organization):
-        groups = AnalyzedItemService.get_all_groups_by_organization(organization=organization)
+    def get_all_analyzed_items(*, team):
+        groups = AnalyzedItemService.get_all_groups_by_team(team=team)
         result = ({'group': group,
                    'analyzed_items': AnalyzedItemService.get_list(
-                       organization=organization,
+                       team=team,
                        name_grop=group.name)
                    } for group in groups)
         return result
@@ -96,8 +96,8 @@ class GroupsSettingsView(BaseMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_base_context(title=self.title)
         user = self.request.user
-        organization_key = f'{user.id}_{user.username}_organization'
-        organization = cache.get(organization_key)
-        groups = AnalyzedItemService.get_all_groups_by_organization(organization)
+        team_key = f'{user.id}_{user.username}_team'
+        team = cache.get(team_key)
+        groups = AnalyzedItemService.get_all_groups_by_team(team)
         c_def['groups'] = groups
         return dict(list(context.items()) + list(c_def.items()))

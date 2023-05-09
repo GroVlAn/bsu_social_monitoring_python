@@ -1,15 +1,15 @@
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from vk_api_app.models_db.vk_user import VkUserStatistics, VkUser, VkUserSummaryStatistics
 
 
 class VkUsersService:
 
     @staticmethod
-    def get_tuple_by_organization(*, organization_id: int) -> tuple[VkUser]:
-        return tuple(VkUser.objects.all().filter(organization=organization_id))
+    def get_tuple_by_team(*, team_id: int) -> tuple[VkUser]:
+        return tuple(VkUser.objects.all().filter(team=team_id))
 
     @staticmethod
     def set_activity(*, activity: int) -> VkUserStatistics:
@@ -19,8 +19,8 @@ class VkUsersService:
         return activity
 
     @staticmethod
-    def get_all_by_date(organization: Organization, date_from, date_to=None):
-        vk_users = tuple(VkUser.objects.filter(organization=organization))
+    def get_all_by_date(team: Team, date_from, date_to=None):
+        vk_users = tuple(VkUser.objects.filter(team=team))
         if date_to is None:
             date_to = date_from + relativedelta(months=1)
         result = []
@@ -40,8 +40,8 @@ class VkUsersService:
         return sorted(result, key=lambda r: r['activity'], reverse=True)[:10]
 
     @staticmethod
-    def count_summary(organization: Organization) -> None:
-        vk_users = tuple(VkUser.objects.filter(organization=organization))
+    def count_summary(team: Team) -> None:
+        vk_users = tuple(VkUser.objects.filter(team=team))
 
         for vk_user in vk_users:
             vk_user_statistics = tuple(VkUserStatistics.objects.filter(owner=vk_user))
@@ -59,9 +59,8 @@ class VkUsersService:
                 vk_summary_statistic.save()
 
     @staticmethod
-    def get_list(*, organization):
-        print(organization)
-        if not VkUser.objects.filter(organization=organization):
+    def get_list(*, team):
+        if not VkUser.objects.filter(team=team):
             return tuple()
-        return tuple(VkUser.objects.filter(organization=organization).
+        return tuple(VkUser.objects.filter(team=team).
                      select_related('vk_user_summary').order_by('-vk_user_summary__score')[:10])

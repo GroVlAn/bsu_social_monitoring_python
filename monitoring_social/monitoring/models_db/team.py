@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Organization(models.Model):
+class Team(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название')
     slug = models.SlugField(
         max_length=255,

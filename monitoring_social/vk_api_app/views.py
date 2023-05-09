@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from monitoring.mixins import BaseMixin
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from vk_api_app.forms.vk_settings_form import VkSettingsForm
 from vk_api_app.models_db.vk_settings import VkSettings
 
@@ -17,10 +17,10 @@ class VkSettingsView(BaseMixin, CreateView):
 
     def get_vk_settings(self, request):
         user = self.request.user
-        organization_key = f'{user.id}_{user.username}_organization'
-        organization = cache.get(organization_key)
-        if organization:
-            return VkSettings.objects.get(organization=organization)
+        team_key = f'{user.id}_{user.username}_team'
+        team = cache.get(team_key)
+        if team:
+            return VkSettings.objects.get(team=team)
         return None
 
     def get_form_kwargs(self):

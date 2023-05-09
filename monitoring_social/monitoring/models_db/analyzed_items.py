@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 
-from monitoring.models_db.organization import *
+from monitoring.models_db.team import *
 
 
 class GroupAnalyzedItems(models.Model):
@@ -21,7 +21,7 @@ class GroupAnalyzedItems(models.Model):
         verbose_name='Русское имя группы элементов'
     )
     level = models.IntegerField(default=1)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.ru_name
@@ -45,7 +45,7 @@ class AnalyzedItem(models.Model):
     description = models.TextField(null=True, verbose_name='Описание')
     date_create = models.DateTimeField(default=timezone.now)
     last_update = models.DateTimeField(default=timezone.now)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     group = models.ForeignKey(GroupAnalyzedItems, on_delete=models.CASCADE)
     parent = models.ForeignKey(
         'self',

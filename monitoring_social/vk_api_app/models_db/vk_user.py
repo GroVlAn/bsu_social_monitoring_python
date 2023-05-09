@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 
 
 class VkUser(models.Model):
     id_user = models.IntegerField(unique=True)
     first_name = models.TextField(blank=True, null=True)
     last_name = models.TextField(blank=True, null=True)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
 
 class VkUserStatistics(models.Model):
@@ -26,7 +26,7 @@ class VkUserStatistics(models.Model):
 
 class VkIgnoreUsers(models.Model):
     id_user = models.IntegerField(unique=True)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
 
 class VkUserSummaryStatistics(models.Model):

@@ -3,7 +3,7 @@ from celery.states import state, STARTED
 from django.contrib.auth.models import User
 
 from celery_app.celery import app
-from monitoring.models_db.organization import Organization
+from monitoring.models_db.team import Team
 from vk_api_app.services.vk_api_service import thread_worker
 
 
@@ -20,8 +20,8 @@ def start_get_data(body):
         return {'status': 'error', 'message': f'task by user {body["user_id"]} already exist'}
 
     user = User.objects.get(pk=body['user_id'])
-    organization = Organization.objects.get(users=user)
-    thread_worker(organization)()
+    team = Team.objects.get(users=user)
+    thread_worker(team)()
     result = AsyncResult(task_id)
     result.forget()
 

@@ -14,22 +14,22 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         initial=None
     )
 
-    organization = forms.ModelChoiceField(
-        queryset=Organization.objects.all(),
-        label='Организация',
+    team = forms.ModelChoiceField(
+        queryset=Team.objects.all(),
+        label='Команда',
         empty_label='Выбрать'
     )
 
-    def __init__(self, request=None, group: GroupAnalyzedItems=None, *args, **kwargs):
+    def __init__(self, request=None, group: GroupAnalyzedItems = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if group is not None:
             self.fields['ru_name'].initial = group.ru_name
             self.fields['level'].initial = group.level
-            self.fields['organization'].initial = group.organization
+            self.fields['team'].initial = group.team
         if request is not None:
-            self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
-            self.fields['organization'].label = 'Организация'
-            self.fields['organization'].empty_label = None
+            self.fields['team'].queryset = Team.objects.filter(users=request.user)
+            self.fields['team'].label = 'Команда'
+            self.fields['team'].empty_label = None
 
     def save(self, group=None, commit=True):
         if group is None:
@@ -37,7 +37,7 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         else:
             group.ru_name = self.cleaned_data['ru_name']
             group.level = self.cleaned_data['level']
-            group.organization = self.cleaned_data['organization']
+            group.team = self.cleaned_data['team']
 
         if commit:
             group.save()
@@ -49,12 +49,12 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         fields = [
             'ru_name',
             'level',
-            'organization'
+            'team'
         ]
         widgets = {
             'ru_name': forms.TextInput(attrs={'class': 'group_analyzed_items__input'}),
             'level': forms.TextInput(attrs={'class': 'group_analyzed_items__input'}),
-            'organization': forms.Select(attrs={'class': 'group_analyzed_items__input'})
+            'team': forms.Select(attrs={'class': 'group_analyzed_items__input'})
         }
 
 
@@ -79,10 +79,10 @@ class AnalyzedItemsForm(forms.ModelForm):
             self.fields['name'].initial = analyzed_item.name
             self.fields['description'].initial = analyzed_item.description
             self.fields['parent'].initial = analyzed_item.parent
-            self.fields['organization'].initial = analyzed_item.organization
-        self.fields['organization'].queryset = Organization.objects.filter(users=request.user)
-        self.fields['organization'].label = 'Организация'
-        self.fields['organization'].empty_label = None
+            self.fields['team'].initial = analyzed_item.team
+        self.fields['team'].queryset = Team.objects.filter(users=request.user)
+        self.fields['team'].label = 'Команда'
+        self.fields['team'].empty_label = None
 
     def save(self, analyzed_item: AnalyzedItem = None, commit=True):
         if analyzed_item is None:
@@ -92,7 +92,7 @@ class AnalyzedItemsForm(forms.ModelForm):
             analyzed_item.name = self.cleaned_data['name']
             analyzed_item.description = self.cleaned_data['description']
             analyzed_item.parent = self.cleaned_data['parent']
-            analyzed_item.organization = self.cleaned_data['organization']
+            analyzed_item.team = self.cleaned_data['team']
 
         if commit:
             analyzed_item.save()
@@ -106,12 +106,12 @@ class AnalyzedItemsForm(forms.ModelForm):
             'name',
             'description',
             'parent',
-            'organization'
+            'team'
         ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'analyzed_items__input'}),
             'description': forms.Textarea(attrs={'class': 'analyzed_items__input'}),
             'group': forms.Select(attrs={'class': 'analyzed_items__select'}),
             'parent': forms.Select(attrs={'class': 'analyzed_items__select'}),
-            'organization': forms.Select(attrs={'class': 'analyzed_items__select'})
+            'team': forms.Select(attrs={'class': 'analyzed_items__select'})
         }

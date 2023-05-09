@@ -40,7 +40,7 @@ class VkAPIService:
 
     def create_service(self, *,
                        service_type: VkServiceType,
-                       organization_id: int = None,
+                       team_id: int = None,
                        analyzed_items: List[AnalyzedItem] = None):
         if service_type == VkServiceType.POST:
             return self._VK_APIS[service_type](
@@ -52,7 +52,7 @@ class VkAPIService:
         elif service_type == VkServiceType.USER:
             return self._VK_APIS[service_type](
                 redis_handler=self._redis_handler,
-                organization_id=organization_id,
+                team_id=team_id,
                 vk_handler=self._vk_handler,
                 vk_validation=self._vk_validation,
             )
@@ -123,19 +123,19 @@ class VkAPISummaryService:
         self._redis_handler.save_single_value(data=json_analysed_item)
 
 
-def thread_worker(organization):
+def thread_worker(team):
     print('worker starting')
     time_start = time.monotonic()
     redis_handler = RedisHandler()
     redis_handler.clear_all()
-    organization_id = organization.id
-    vk_settings = VkSettings.objects.get(organization=organization)
+    team_id = team.id
+    vk_settings = VkSettings.objects.get(team=team)
     vk_validation = VkValidationHandler()
     if vk_settings is None:
         print('VKSettings is none')
         return
 
-    analyzed_items = list(AnalyzedItem.objects.all().filter(organization=organization_id))
+    analyzed_items = list(AnalyzedItem.objects.all().filter(team=team_id))
     vk_handler = VkHandler(token=vk_settings.token, group_id=vk_settings.group_id)
     vk_api = VkAPIService(
         redis_handler=redis_handler,
@@ -148,7 +148,7 @@ def thread_worker(organization):
     )
     vk_api_users_service = vk_api.create_service(
         service_type=VkServiceType.USER,
-        organization_id=organization_id
+        team_id=team_id
     )
     vk_api_service = VkAPISummaryService(redis_handler=redis_handler,
                                          analyzed_items=analyzed_items,
@@ -160,12 +160,12 @@ def thread_worker(organization):
             vk_api_posts_service=vk_api_posts_service,
             vk_api_users_service=vk_api_users_service,
             ids_posts=vk_api_posts_service.ids_posts)
-        vk_api_users_service.save_users(organization=organization)
+        vk_api_users_service.save_users(team=team)
         vk_api_service.count_likes(vk_users_handler=vk_api_users_service.vk_users_handler)
         vk_api_service.save_analyzed_items()
-        AnalyzedItemService.count_summary(organization=organization)
-        VkUsersService.count_summary(organization)
-        vk_api_users_service.save_users_info(organization_id)
+        AnalyzedItemService.count_summary(team=team)
+        VkUsersService.count_summary(team)
+        vk_api_users_service.save_users_info(team_id)
         time_end = time.monotonic()
         elapsed_time = datetime.timedelta(seconds=int(time_end - time_start))
         print('Task worked %s time' % elapsed_time)

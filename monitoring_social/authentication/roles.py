@@ -19,11 +19,9 @@ class Owner(AbstractUserRole):
     }
 
 
-class Employee(AbstractUserRole):
+class Invited(AbstractUserRole):
+    """Person which was invited to team"""
     available_permissions = {
-        'create_team': False,
         'edit_monitoring_settings': True,
-        'edit_team_settings': True,
         'edit_vk_settings': True,
-        'delete_items': False
     }

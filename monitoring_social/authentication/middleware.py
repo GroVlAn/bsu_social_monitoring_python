@@ -15,7 +15,7 @@ class RequireLoginMiddleware:
             reverse('admin:login'),
         ]
         self.not_allowed_for_employee = [
-            reverse('edit_organization'),
+            reverse('edit_team'),
             reverse('get_vk_api'),
         ]
 
