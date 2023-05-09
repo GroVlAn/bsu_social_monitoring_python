@@ -36,12 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rolepermissions',
 
     'monitoring',
     'authentication',
     'vk_api_app',
     'celery_app'
 ]
+
+ROLEPERMISSIONS_MODULE = 'authentication.roles'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,7 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'authentication.middleware.RequireLoginMiddleware'
+    'authentication.middlewares.login_middleware.RequireLoginMiddleware',
+    'authentication.middlewares.roles_middleware.RequireRolesMiddleware'
 ]
 
 ROOT_URLCONF = 'monitoring_social.urls'
