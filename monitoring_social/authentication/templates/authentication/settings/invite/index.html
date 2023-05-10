@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     <h1 class="sign__title">Пригласить пользователя</h1>
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% else %}
-        <div class="invited_link">{{ invited_link }}</div>
-    {% endif %}
+    <div class="constructor_blocs">
+        <div class="constructor_block this--flex this--sb">
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% else %}
+
+                <div class="invited_link js_copy_link">
+                    <div class="invited_link__title">Ссылка для приглашения:</div>
+                    <div class="invited_link__wrapper">
+                        <span class="invited_link__link js_link">{{ invited_link }}</span>
+                        <span class="invited_link__btn">
+                        <img src="{% static 'assets/img/copy_icon.png' %}" alt="">
+                    </span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

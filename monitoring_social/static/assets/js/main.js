@@ -3788,7 +3788,30 @@ teamsSelect.addEventListener('change', function (e) {
   });
 });
 
+;// CONCATENATED MODULE: ./assets_src/ts/modules/copy_link.ts
+function copyLink() {
+  var copyBlock = document.querySelector('.js_copy_link');
+  if (!copyBlock) {
+    return;
+  }
+  var link = copyBlock.querySelector('.js_link');
+  if (!link) {
+    return;
+  }
+  copyBlock.addEventListener('click', function (e) {
+    e.preventDefault();
+    navigator.clipboard.writeText(link.textContent).then(function (result) {
+      console.log(result);
+    }, function (error) {
+      console.log(error);
+      alert('Не удалось скопировать');
+    });
+  });
+}
+copyLink();
+
 ;// CONCATENATED MODULE: ./assets_src/ts/app.ts
+
 
 }();
 /******/ })()

@@ -1,0 +1,31 @@
+.invited_link {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.invited_link__wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.invited_link__title {
+    font-weight: 500;
+    font-size: 22px;
+}
+
+.invited_link__link {
+    font-weight: 700;
+    font-size: 18px;
+    color: #7a5cfa;
+    margin-left: 15px;
+}
+
+.invited_link__btn {
+    height: 40px;
+    margin-left: 15px;
+    
+    img {
+        max-height: 100%;
+    }
+}
