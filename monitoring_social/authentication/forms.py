@@ -76,7 +76,6 @@ class SignUpForm(UserCreationForm):
 
         if commit:
             user.save()
-            assign_role(user, 'owner')
 
         return user
 

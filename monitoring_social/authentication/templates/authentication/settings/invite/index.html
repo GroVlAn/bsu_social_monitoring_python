@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="sign__title">Пригласить пользователя</h1>
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% else %}
+        <div class="invited_link">{{ invited_link }}</div>
+    {% endif %}
+{% endblock %}

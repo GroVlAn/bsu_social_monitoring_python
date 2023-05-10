@@ -27,7 +27,8 @@ class SettingsPage(BaseMixin, TemplateView):
             {'url': 'team/edit/', 'title': 'Команда'},
             {'url': 'monitoring/items/', 'title': 'Анализируемые элементы'},
             {'url': 'groups/', 'title': 'Группы анализируемых элементов'},
-            {'url': 'vk/', 'title': 'Настройки приложения Вконтакте'}
+            {'url': 'vk/', 'title': 'Настройки приложения Вконтакте'},
+            {'url': 'invite/', 'title': 'Пригласить пользователя'},
         ]
 
 

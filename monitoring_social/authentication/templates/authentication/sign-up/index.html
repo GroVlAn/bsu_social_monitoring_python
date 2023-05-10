@@ -6,6 +6,9 @@
         <div class="auth__wrapper">
             <form class="auth__form" action="{% url 'sign_up_page' %}" method="post">
                 {% csrf_token %}
+                {% if uuid %}
+                    <input type="hidden" name="uuid" value="{{ uuid }}">
+                {% endif %}
                 <div class="auth__fields">
                     <div class="auth__field this--1_2">
                         <label for="{{ form.last_name.id }}" class="auth__label">{{ form.last_name.label }}</label>
