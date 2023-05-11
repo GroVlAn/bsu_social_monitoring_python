@@ -1,14 +1,14 @@
 from datetime import datetime
 import pytz
 
-from monitoring.models_db.analyzed_items import AnalyzedItem
+from monitoring.models_db.search_items import SearchItem
 from monitoring.models_db.statistics import Statistics
 
 
 class StatisticsService:
 
     @staticmethod
-    def create(*, statistics: dict, owner: AnalyzedItem) -> None:
+    def create(*, statistics: dict, owner: SearchItem) -> None:
         if Statistics.objects.filter(date_from=statistics['date_from'], owner=owner):
             return
 
@@ -30,7 +30,7 @@ class StatisticsService:
         statistics.save()
 
     @staticmethod
-    def check_date(*, date: datetime, owner: AnalyzedItem) -> bool:
+    def check_date(*, date: datetime, owner: SearchItem) -> bool:
         return Statistics.objects.filter(
             date_from__day=date.day,
             date_from__month=date.month,
@@ -38,7 +38,7 @@ class StatisticsService:
             owner=owner).exists()
 
     @staticmethod
-    def clear_statistics_by_owner(*, date: datetime, owner: AnalyzedItem) -> None:
+    def clear_statistics_by_owner(*, date: datetime, owner: SearchItem) -> None:
         Statistics.objects.filter(date_from__day=date.day,
                                   date_from__month=date.month,
                                   date_from__year=date.year,

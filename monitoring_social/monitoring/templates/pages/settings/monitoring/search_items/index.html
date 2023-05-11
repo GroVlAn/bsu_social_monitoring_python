@@ -26,21 +26,21 @@
                         </tr>
                         </thead>
                         <tbody class="monitoring__tbody">
-                        {% for analyzed_item in item.analyzed_items %}
+                        {% for search_item in item.search_items %}
                             <tr class="monitoring_tr">
                                 <td class="monitoring_td">
                                     {{ forloop.counter }}
                                 </td>
                                 <td class="monitoring_td">
-                                    {{ analyzed_item.name }}
+                                    {{ search_item.name }}
                                 </td>
-                                {% if analyzed_item.parent %}
+                                {% if search_item.parent %}
                                     <td class="monitoring_td">
-                                        {{ analyzed_item.parent }}
+                                        {{ search_item.parent }}
                                     </td>
                                 {% endif %}
                                 <td class="monitoring_td">
-                                    <a href="{% url 'edit_analyzed_item' id=analyzed_item.id %}" class="btn_dashed">Изменить</a>
+                                    <a href="{% url 'edit_search_item' id=search_item.id %}" class="btn_dashed">Изменить</a>
                                 </td>
                             </tr>
                         {% endfor %}

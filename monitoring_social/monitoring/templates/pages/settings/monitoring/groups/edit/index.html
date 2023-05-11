@@ -10,7 +10,7 @@
     <div class="constructor_blocs">
         <div class="constructor_block this--flex this--t_l_b_r_0 this--sb">
             <div class="default_form__wrapper">
-                <form class="default_form" action="{% url 'edit_group_analyzed_items' id=group_id%}" method="POST">
+                <form class="default_form" action="{% url 'edit_group_search_items' id=group_id%}" method="POST">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="default_form__fields">

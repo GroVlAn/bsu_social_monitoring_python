@@ -1,8 +1,8 @@
 import time
 from typing import List
 
-from monitoring.models_db.analyzed_items import AnalyzedItem
-from monitoring.services.analysed_item_service import AnalyzedItemService
+from monitoring.models_db.search_items import SearchItem
+from monitoring.services.search_item_service import SearchItemService
 from vk_api_app.handlers.redis_handler import RedisHandler
 from vk_api_app.handlers.vk_handler import VkHandler, VkHandlerType
 from vk_api_app.handlers.vk_validation_handler import VkValidationHandler
@@ -15,7 +15,7 @@ class VkAPIPostService(VkAPIAbstractService):
     def __init__(self, *,
                  redis_handler: RedisHandler,
                  vk_handler: VkHandler,
-                 analyzed_items: List[AnalyzedItem],
+                 analyzed_items: List[SearchItem],
                  vk_validation: VkValidationHandler):
         super().__init__(redis_handler=redis_handler, vk_handler=vk_handler, vk_validation=vk_validation)
         self._vk_posts_handler = self.vk_handler.create_handler(handler_type=VkHandlerType.POST)
@@ -62,11 +62,11 @@ class VkAPIPostService(VkAPIAbstractService):
         self._redis_handler.save_key_value(json_post)
 
     def save_post(self, *, post: dict) -> None:
-        for analysed_item in self._analyzed_items:
-            keywords = AnalyzedItemService.get_keywords_tuple(analysed_item=analysed_item)
+        for search_item in self._analyzed_items:
+            keywords = SearchItemService.get_keywords_tuple(search_item=search_item)
             if VkValidationHandler.text_contains_in_text_post(
                     current_text=post['text'],
-                    searching_item=analysed_item.name) or \
+                    searching_item=search_item.name) or \
                     (len(keywords) > 0 and
                      VkValidationHandler.keyword_in_text_post(current_text=post['text'], keywords=keywords)):
-                VkPostsService.save_post(post=post, analysed_item=analysed_item)
+                VkPostsService.save_post(post=post, search_item=search_item)

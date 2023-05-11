@@ -1,5 +1,5 @@
 from django.db import models
-from monitoring.models_db.analyzed_items import *
+from monitoring.models_db.search_items import *
 
 
 class Statistics(models.Model):
@@ -9,7 +9,7 @@ class Statistics(models.Model):
     date_from = models.DateTimeField(blank=True, null=True)
     date_to = models.DateTimeField(blank=True, null=True)
     owner = models.ForeignKey(
-        AnalyzedItem,
+        SearchItem,
         on_delete=models.CASCADE
     )
 

@@ -7,7 +7,7 @@ from django.utils.text import slugify
 from monitoring.models_db.team import *
 
 
-class GroupAnalyzedItems(models.Model):
+class GroupSearchItems(models.Model):
     name = models.SlugField(
         max_length=255,
         unique=True,
@@ -30,13 +30,13 @@ class GroupAnalyzedItems(models.Model):
         if not self.name:
             slug_text = slugify(self.ru_name, allow_unicode=True)
             self.name = translit(slug_text, 'ru', reversed=True)
-        super(GroupAnalyzedItems, self).save(*args, **kwargs)
+        super(GroupSearchItems, self).save(*args, **kwargs)
 
     class Meta:
-        db_table = 'monitoring_group_analyzed_items'
+        db_table = 'monitoring_group_search_items'
 
 
-class AnalyzedItem(models.Model):
+class SearchItem(models.Model):
     name = models.CharField(
         max_length=300,
         unique=True,
@@ -46,7 +46,7 @@ class AnalyzedItem(models.Model):
     date_create = models.DateTimeField(default=timezone.now)
     last_update = models.DateTimeField(default=timezone.now)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
-    group = models.ForeignKey(GroupAnalyzedItems, on_delete=models.CASCADE)
+    group = models.ForeignKey(GroupSearchItems, on_delete=models.CASCADE)
     parent = models.ForeignKey(
         'self',
         null=True,
@@ -59,12 +59,12 @@ class AnalyzedItem(models.Model):
         return self.name
 
     class Meta:
-        db_table = 'monitoring_analyzed_item'
+        db_table = 'monitoring_search_item'
 
 
-class AnalyzedItemsSummaryStatistics(models.Model):
+class SearchItemsSummaryStatistics(models.Model):
     owner = models.OneToOneField(
-        AnalyzedItem,
+        SearchItem,
         on_delete=models.CASCADE,
         primary_key=True,
         related_name='summary_statistics'
@@ -75,12 +75,12 @@ class AnalyzedItemsSummaryStatistics(models.Model):
     score = models.IntegerField(default=0)
 
     class Meta:
-        db_table = 'monitoring_analyzed_items_summary_statistics'
+        db_table = 'monitoring_search_items_summary_statistics'
 
 
-class AnalyzedItemKeywords(models.Model):
+class SearchItemKeywords(models.Model):
     keyword = models.TextField(blank=True, null=True)
-    owner = models.ForeignKey(AnalyzedItem, on_delete=models.CASCADE)
+    owner = models.ForeignKey(SearchItem, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'monitoring_analyzed_item_keywords'
+        db_table = 'monitoring_search_item_keywords'

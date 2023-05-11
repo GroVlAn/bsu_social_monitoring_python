@@ -66,7 +66,7 @@ class VkValidationHandler:
     def text_contains_in_text_post(*, current_text: str, searching_item: str) -> bool:
         """Check that current text contains in post
         :param current_text: text that def is searching item
-        :param searching_item: some text, for example may be named of analysed item """
+        :param searching_item: some text, for example may be named of search item """
 
         if len(current_text) == 0:
             return False

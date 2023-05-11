@@ -1,6 +1,6 @@
 <div class="default_form__wrapper">
 
-    <form class="default_form" action="{% url 'create_analyzed_item' %}" method="POST">
+    <form class="default_form" action="{% url 'create_search_item' %}" method="POST">
 
         {% csrf_token %}
         {% for field in form %}

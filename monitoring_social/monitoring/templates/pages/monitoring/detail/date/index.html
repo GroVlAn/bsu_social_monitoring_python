@@ -7,7 +7,7 @@
                 {{ result.name_group }}
             </div>
 
-            <a href="{% url 'create_analyzed_item' %}" class="btn">Добавить</a>
+            <a href="{% url 'create_search_item' %}" class="btn">Добавить</a>
         </div>
     </div>
     <div class="constructor_blocs">
@@ -27,13 +27,13 @@
                             </tr>
                             </thead>
                             <tbody class="monitoring__tbody">
-                            {% for analyzed_item in result.analyzed_items %}
+                            {% for search_item in result.search_items %}
                                 <tr class="monitoring_tr">
                                     <td class="monitoring_td">
                                         {{ forloop.counter }}
                                     </td>
                                     <td class="monitoring_td">
-                                        {{ analyzed_item.analyzed_item.name }}
+                                        {{ search_item.search_item.name }}
                                     </td>
                                     <td class="monitoring_td">
                                         {{ analyzed_item.likes }}

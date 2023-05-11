@@ -4,10 +4,10 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, FormView
 
 from authentication.forms import EditProfileForm
-from monitoring.forms.analyzed_items_form import AnalyzedItemsForm
+from monitoring.forms.search_items_form import SearchItemsForm
 from monitoring.mixins import BaseMixin
-from monitoring.models_db.analyzed_items import AnalyzedItem
-from monitoring.services.analysed_item_service import AnalyzedItemService
+from monitoring.models_db.search_items import SearchItem
+from monitoring.services.search_item_service import SearchItemService
 
 
 class SettingsPage(BaseMixin, TemplateView):
@@ -65,9 +65,9 @@ class UserSettingsView(BaseMixin, FormView):
         return initial_data
 
 
-class AnalyzedItemsSettingsView(BaseMixin, TemplateView):
+class SearchItemsSettingsView(BaseMixin, TemplateView):
     title = 'Настройки анализируемых элементов'
-    template_name = 'pages/settings/monitoring/analysed_items/index.html'
+    template_name = 'pages/settings/monitoring/search_items/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,14 +75,14 @@ class AnalyzedItemsSettingsView(BaseMixin, TemplateView):
         user = self.request.user
         team_key = f'{user.id}_{user.username}_team'
         current_team = cache.get(team_key)
-        c_def['result'] = self.get_all_analyzed_items(team=current_team)
+        c_def['result'] = self.get_all_search_items(team=current_team)
         return dict(list(context.items()) + list(c_def.items()))
 
     @staticmethod
-    def get_all_analyzed_items(*, team):
-        groups = AnalyzedItemService.get_all_groups_by_team(team=team)
+    def get_all_search_items(*, team):
+        groups = SearchItemService.get_all_groups_by_team(team=team)
         result = ({'group': group,
-                   'analyzed_items': AnalyzedItemService.get_list(
+                   'search_items': SearchItemService.get_list(
                        team=team,
                        name_grop=group.name)
                    } for group in groups)
@@ -99,6 +99,6 @@ class GroupsSettingsView(BaseMixin, TemplateView):
         user = self.request.user
         team_key = f'{user.id}_{user.username}_team'
         team = cache.get(team_key)
-        groups = AnalyzedItemService.get_all_groups_by_team(team)
+        groups = SearchItemService.get_all_groups_by_team(team)
         c_def['groups'] = groups
         return dict(list(context.items()) + list(c_def.items()))

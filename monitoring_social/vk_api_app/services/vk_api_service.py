@@ -4,8 +4,8 @@ from enum import IntEnum
 
 from typing import List
 
-from monitoring.models_db.analyzed_items import AnalyzedItem
-from monitoring.services.analysed_item_service import AnalyzedItemService
+from monitoring.models_db.search_items import SearchItem
+from monitoring.services.search_item_service import SearchItemService
 from monitoring.services.statistics_service import StatisticsService
 from vk_api_app.handlers.vk_handler import VkHandler
 from vk_api_app.handlers.vk_users_handler import VkUsersHandler
@@ -41,13 +41,13 @@ class VkAPIService:
     def create_service(self, *,
                        service_type: VkServiceType,
                        team_id: int = None,
-                       analyzed_items: List[AnalyzedItem] = None):
+                       search_items: List[SearchItem] = None):
         if service_type == VkServiceType.POST:
             return self._VK_APIS[service_type](
                 redis_handler=self._redis_handler,
                 vk_handler=self._vk_handler,
                 vk_validation=self._vk_validation,
-                analyzed_items=analyzed_items
+                search_items=search_items
             )
         elif service_type == VkServiceType.USER:
             return self._VK_APIS[service_type](
@@ -61,10 +61,10 @@ class VkAPIService:
 class VkAPISummaryService:
     def __init__(self, *,
                  redis_handler: RedisHandler,
-                 analyzed_items: List[AnalyzedItem],
+                 search_items: List[SearchItem],
                  vk_validation: VkValidationHandler):
         self._redis_handler = redis_handler
-        self._analyzed_items = analyzed_items
+        self._search_items = search_items
         self._vk_validation = vk_validation
 
     def save_post_and_get_users(
@@ -81,9 +81,9 @@ class VkAPISummaryService:
             vk_api_users_service.get_users(post_id=number_post_id)
 
     def count_likes(self, *, vk_users_handler: VkUsersHandler) -> None:
-        for analysed_item in self._analyzed_items:
-            db_posts = VkPostsService.get_tuple_posts(analysed_item=analysed_item)
-            analysed_item_key = f'analyzed_item-{analysed_item.id}'
+        for search_item in self._search_items:
+            db_posts = VkPostsService.get_tuple_posts(search_item=search_item)
+            search_item_key = f'search_item-{search_item.id}'
 
             for db_post in db_posts:
                 users = vk_users_handler.getUsersIds(post_id=db_post.id_post)
@@ -91,36 +91,36 @@ class VkAPISummaryService:
                     db_user = VkUser.objects.filter(id_user=user_id).exists()
 
                     if db_user:
-                        if self._redis_handler.is_key_exit(analysed_item_key):
-                            self._redis_handler.update_single_value(key=analysed_item_key)
+                        if self._redis_handler.is_key_exit(search_item_key):
+                            self._redis_handler.update_single_value(key=search_item_key)
                         else:
-                            self._save_json_analysed_likes(analysed_item_id=analysed_item.id)
+                            self._save_json_search_likes(search_item_id=search_item.id)
 
                 time.sleep(0.333)
 
-    def save_analyzed_items(self) -> None:
-        for analyzed_item in self._analyzed_items:
-            db_posts = VkPostsService.get_tuple_posts(analysed_item=analyzed_item)
+    def save_search_items(self) -> None:
+        for search_item in self._search_items:
+            db_posts = VkPostsService.get_tuple_posts(search_item=search_item)
             statistic = {
-                'likes': int(self._redis_handler.get_count_by_key(key=f'analyzed_item-{analyzed_item.id}')),
+                'likes': int(self._redis_handler.get_count_by_key(key=f'search_item-{search_item.id}')),
                 'comments': sum([int(db_post.comments) for db_post in db_posts]),
                 'reposts': sum([int(db_post.reposts) for db_post in db_posts]),
                 'date_from': self._vk_validation.date_before,
                 'date_to': self._vk_validation.date_after,
             }
 
-            if StatisticsService.check_date(date=self._vk_validation.date_before, owner=analyzed_item):
-                StatisticsService.clear_statistics_by_owner(date=self._vk_validation.date_before, owner=analyzed_item)
+            if StatisticsService.check_date(date=self._vk_validation.date_before, owner=search_item):
+                StatisticsService.clear_statistics_by_owner(date=self._vk_validation.date_before, owner=search_item)
 
-            StatisticsService.create(statistics=statistic, owner=analyzed_item)
+            StatisticsService.create(statistics=statistic, owner=search_item)
 
-    def _save_json_analysed_likes(self, *, analysed_item_id: int) -> None:
-        json_analysed_item = {
-            'key': f'analyzed_item-{analysed_item_id}',
+    def _save_json_search_likes(self, *, search_item_id: int) -> None:
+        json_search_item = {
+            'key': f'search_item-{search_item_id}',
             'value': 1
         }
 
-        self._redis_handler.save_single_value(data=json_analysed_item)
+        self._redis_handler.save_single_value(data=json_search_item)
 
 
 def thread_worker(team):
@@ -135,7 +135,7 @@ def thread_worker(team):
         print('VKSettings is none')
         return
 
-    analyzed_items = list(AnalyzedItem.objects.all().filter(team=team_id))
+    search_items = list(SearchItem.objects.all().filter(team=team_id))
     vk_handler = VkHandler(token=vk_settings.token, group_id=vk_settings.group_id)
     vk_api = VkAPIService(
         redis_handler=redis_handler,
@@ -144,14 +144,14 @@ def thread_worker(team):
     )
     vk_api_posts_service = vk_api.create_service(
         service_type=VkServiceType.POST,
-        analyzed_items=analyzed_items
+        search_items=search_items
     )
     vk_api_users_service = vk_api.create_service(
         service_type=VkServiceType.USER,
         team_id=team_id
     )
     vk_api_service = VkAPISummaryService(redis_handler=redis_handler,
-                                         analyzed_items=analyzed_items,
+                                         search_items=search_items,
                                          vk_validation=vk_validation)
 
     def worker():
@@ -162,8 +162,8 @@ def thread_worker(team):
             ids_posts=vk_api_posts_service.ids_posts)
         vk_api_users_service.save_users(team=team)
         vk_api_service.count_likes(vk_users_handler=vk_api_users_service.vk_users_handler)
-        vk_api_service.save_analyzed_items()
-        AnalyzedItemService.count_summary(team=team)
+        vk_api_service.save_search_items()
+        SearchItemService.count_summary(team=team)
         VkUsersService.count_summary(team)
         vk_api_users_service.save_users_info(team_id)
         time_end = time.monotonic()

@@ -1,8 +1,8 @@
 from django import forms
-from monitoring.models_db.analyzed_items import *
+from monitoring.models_db.search_items import *
 
 
-class GroupAnalyzedItemsForm(forms.ModelForm):
+class GroupSearchItemsForm(forms.ModelForm):
     ru_name = forms.CharField(
         label='Название',
         widget=forms.TextInput(),
@@ -20,7 +20,7 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         empty_label='Выбрать'
     )
 
-    def __init__(self, request=None, group: GroupAnalyzedItems = None, *args, **kwargs):
+    def __init__(self, request=None, group: GroupSearchItems = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if group is not None:
             self.fields['ru_name'].initial = group.ru_name
@@ -45,7 +45,7 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         return group
 
     class Meta:
-        model = GroupAnalyzedItems
+        model = GroupSearchItems
         fields = [
             'ru_name',
             'level',
@@ -58,21 +58,21 @@ class GroupAnalyzedItemsForm(forms.ModelForm):
         }
 
 
-class AnalyzedItemsForm(forms.ModelForm):
+class SearchItemsForm(forms.ModelForm):
     group = forms.ModelChoiceField(
-        queryset=GroupAnalyzedItems.objects.all(),
+        queryset=GroupSearchItems.objects.all(),
         label='Группа',
         empty_label=None,
     )
     parent = forms.ModelChoiceField(
-        queryset=AnalyzedItem.objects.all(),
+        queryset=SearchItem.objects.all(),
         label='Родитель',
         empty_label='Выберете',
         required=False,
         initial=None
     )
 
-    def __init__(self, request, analyzed_item: AnalyzedItem = None, *args, **kwargs):
+    def __init__(self, request, analyzed_item: SearchItem = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if analyzed_item is not None:
             self.fields['group'].initial = analyzed_item.group
@@ -84,7 +84,7 @@ class AnalyzedItemsForm(forms.ModelForm):
         self.fields['team'].label = 'Команда'
         self.fields['team'].empty_label = None
 
-    def save(self, analyzed_item: AnalyzedItem = None, commit=True):
+    def save(self, analyzed_item: SearchItem = None, commit=True):
         if analyzed_item is None:
             analyzed_item = super().save(commit=False)
         else:
@@ -100,7 +100,7 @@ class AnalyzedItemsForm(forms.ModelForm):
         return analyzed_item
 
     class Meta:
-        model = AnalyzedItem
+        model = SearchItem
         fields = [
             'group',
             'name',

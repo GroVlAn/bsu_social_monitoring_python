@@ -11,7 +11,7 @@
 
             <div class="default_form__wrapper">
 
-                <form class="default_form" action="{% url 'edit_analyzed_item' id=analyzed_item_id %}" method="POST">
+                <form class="default_form" action="{% url 'edit_search_item' id=search_item_id %}" method="POST">
 
                     {% csrf_token %}
                     {% for field in form %}

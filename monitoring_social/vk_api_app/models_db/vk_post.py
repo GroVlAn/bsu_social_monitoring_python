@@ -1,6 +1,6 @@
 from django.db import models
 
-from monitoring.models_db.analyzed_items import AnalyzedItem
+from monitoring.models_db.search_items import SearchItem
 
 
 class VkPost(models.Model):
@@ -11,5 +11,5 @@ class VkPost(models.Model):
     comments = models.IntegerField(verbose_name='Количество комментариев')
     reposts = models.IntegerField(verbose_name='Количество "Поделиться"')
     views = models.IntegerField(verbose_name='Количество просмотров')
-    analysed_item = models.ForeignKey(AnalyzedItem, on_delete=models.CASCADE, blank=False)
+    search_item = models.ForeignKey(SearchItem, on_delete=models.CASCADE, blank=True, null=True)
     
