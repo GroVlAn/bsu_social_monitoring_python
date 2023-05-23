@@ -1,5 +1,7 @@
 from django import forms
-from monitoring.models_db.search_items import *
+
+from monitoring.models_db.search_items import GroupSearchItems, SearchItem
+from monitoring.models_db.team import Team
 
 
 class GroupSearchItemsForm(forms.ModelForm):
@@ -52,9 +54,9 @@ class GroupSearchItemsForm(forms.ModelForm):
             'team'
         ]
         widgets = {
-            'ru_name': forms.TextInput(attrs={'class': 'group_analyzed_items__input'}),
-            'level': forms.TextInput(attrs={'class': 'group_analyzed_items__input'}),
-            'team': forms.Select(attrs={'class': 'group_analyzed_items__input'})
+            'ru_name': forms.TextInput(attrs={'class': 'group_search_items__input'}),
+            'level': forms.TextInput(attrs={'class': 'group_search_items__input'}),
+            'team': forms.Select(attrs={'class': 'group_search_items__input'})
         }
 
 
@@ -72,32 +74,32 @@ class SearchItemsForm(forms.ModelForm):
         initial=None
     )
 
-    def __init__(self, request, analyzed_item: SearchItem = None, *args, **kwargs):
+    def __init__(self, request, search_item: SearchItem = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if analyzed_item is not None:
-            self.fields['group'].initial = analyzed_item.group
-            self.fields['name'].initial = analyzed_item.name
-            self.fields['description'].initial = analyzed_item.description
-            self.fields['parent'].initial = analyzed_item.parent
-            self.fields['team'].initial = analyzed_item.team
+        if search_item is not None:
+            self.fields['group'].initial = search_item.group
+            self.fields['name'].initial = search_item.name
+            self.fields['description'].initial = search_item.description
+            self.fields['parent'].initial = search_item.parent
+            self.fields['team'].initial = search_item.team
         self.fields['team'].queryset = Team.objects.filter(users=request.user)
         self.fields['team'].label = 'Команда'
         self.fields['team'].empty_label = None
 
-    def save(self, analyzed_item: SearchItem = None, commit=True):
-        if analyzed_item is None:
-            analyzed_item = super().save(commit=False)
+    def save(self, search_item: SearchItem = None, commit=True):
+        if search_item is None:
+            search_item = super().save(commit=False)
         else:
-            analyzed_item.group = self.cleaned_data['group']
-            analyzed_item.name = self.cleaned_data['name']
-            analyzed_item.description = self.cleaned_data['description']
-            analyzed_item.parent = self.cleaned_data['parent']
-            analyzed_item.team = self.cleaned_data['team']
+            search_item.group = self.cleaned_data['group']
+            search_item.name = self.cleaned_data['name']
+            search_item.description = self.cleaned_data['description']
+            search_item.parent = self.cleaned_data['parent']
+            search_item.team = self.cleaned_data['team']
 
         if commit:
-            analyzed_item.save()
+            search_item.save()
 
-        return analyzed_item
+        return search_item
 
     class Meta:
         model = SearchItem
@@ -109,9 +111,9 @@ class SearchItemsForm(forms.ModelForm):
             'team'
         ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'analyzed_items__input'}),
-            'description': forms.Textarea(attrs={'class': 'analyzed_items__input'}),
-            'group': forms.Select(attrs={'class': 'analyzed_items__select'}),
-            'parent': forms.Select(attrs={'class': 'analyzed_items__select'}),
-            'team': forms.Select(attrs={'class': 'analyzed_items__select'})
+            'name': forms.TextInput(attrs={'class': 'search_items__input'}),
+            'description': forms.Textarea(attrs={'class': 'search_items__input'}),
+            'group': forms.Select(attrs={'class': 'search_items__select'}),
+            'parent': forms.Select(attrs={'class': 'search_items__select'}),
+            'team': forms.Select(attrs={'class': 'search_items__select'})
         }

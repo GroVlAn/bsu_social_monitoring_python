@@ -168,7 +168,7 @@ class MonitoringVkUsersView(BaseMixin, ListView):
 
 
 class MonitoringDetailByDate(BaseMixin, TemplateView):
-    title = 'Анализируемы элементы по дате'
+    title = 'Искомые элементы по дате'
     template_name = 'pages/monitoring/detail/date/index.html'
 
     def get_context_data(self, **kwargs):
@@ -191,14 +191,14 @@ class MonitoringDetailByDate(BaseMixin, TemplateView):
         )
         c_def['result'] = {
             'name_group': group_ru_name,
-            'analyzed_items': filtered_analyzed_items
+            'search_item': filtered_search_items
         }
         return dict(list(context.items()) + list(c_def.items()))
 
 
 class MonitoringDetailView(BaseMixin, ListView):
     model = GroupSearchItems
-    title = 'Анализируемые элементы'
+    title = 'Искомые элементы'
     template_name = 'pages/monitoring/detail/index.html'
     slug_field = 'monitoring_slug'
 
@@ -210,14 +210,14 @@ class MonitoringDetailView(BaseMixin, ListView):
         key_team = f'{user.id}_{user.username}_team'
         current_team = cache.get(key_team)
         print(group)
-        analyzed_items = SearchItemService.get_by_group(
+        search_items = SearchItemService.get_by_group(
             team=current_team,
             group=group
         )
         group_ru_name = GroupSearchItems.objects.get(name=group).ru_name
 
         c_def['result'] = {'name_group': group_ru_name,
-                           'analyzed_items': analyzed_items}
+                           'search_items': search_items}
         return dict(list(context.items()) + list(c_def.items()))
 
 

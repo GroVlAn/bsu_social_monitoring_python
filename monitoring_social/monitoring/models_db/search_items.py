@@ -52,7 +52,7 @@ class SearchItem(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='analyzed_item'
+        related_name='search_item'
     )
 
     def __str__(self):

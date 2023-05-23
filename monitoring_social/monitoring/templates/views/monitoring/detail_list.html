@@ -1,5 +1,5 @@
 <div class="monitoring">
-    <div class="monitoring__wrapper">
+    <div class="monitoring__wrapper this--flex">
         <div class="monitoring__data">
             <table class="monitoring__table">
                 <thead class="monitoring__thread">
@@ -13,30 +13,63 @@
                 </tr>
                 </thead>
                 <tbody class="monitoring__tbody">
-                {% for analyzed_item in result.analyzed_items %}
+                {% for search_item in result.search_items %}
                     <tr class="monitoring_tr">
                         <td class="monitoring_td">
                             {{ forloop.counter }}
                         </td>
                         <td class="monitoring_td">
-                            {{ analyzed_item.name }}
+                            {{ search_item.name }}
                         </td>
                         <td class="monitoring_td">
-                            {{ analyzed_item.summary_statistics.likes }}
+                            {{ search_item.summary_statistics.likes }}
                         </td>
                         <td class="monitoring_td">
-                            {{ analyzed_item.summary_statistics.comments }}
+                            {{ search_item.summary_statistics.comments }}
                         </td>
                         <td class="monitoring_td">
-                            {{ analyzed_item.summary_statistics.reposts }}
+                            {{ search_item.summary_statistics.reposts }}
                         </td>
                         <td class="monitoring_td">
-                            {{ analyzed_item.summary_statistics.score }}
+                            {{ search_item.summary_statistics.score }}
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div class="monitoring__form_block">
+            <form action="" method="GET" class="monitoring_date_form">
+                {{ csrt_token }}
+                <div class="monitoring__form_block__title">
+                    Отфильтровать по дате
+                </div>
+                <div class="monitoring_date_form__field">
+                    <label for="monitoring_date_from"
+                           class="monitoring__form_block__label">
+                        С
+                    </label>
+                    <input class="js_date_picker"
+                           name="date_from"
+                           id="monitoring_date_from"
+                           placeholder="dd.mm.yyyy"
+                           type="text">
+                </div>
+                <div class="monitoring_date_form__field">
+                    <label for="monitoring_date_to"
+                           class="monitoring__form_block__label">
+                        До
+                    </label>
+
+                    <input class="js_date_picker"
+                           name="date_to"
+                           id="monitoring_date_to"
+                           placeholder="dd.mm.yyyy"
+                           type="text">
+                </div>
+                <input type="submit" value="Отфильтровать" class="btn">
+
+            </form>
         </div>
     </div>
 </div>

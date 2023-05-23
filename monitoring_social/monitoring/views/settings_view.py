@@ -25,7 +25,7 @@ class SettingsPage(BaseMixin, TemplateView):
         return [
             {'url': 'user', 'title': 'Пользователь'},
             {'url': 'team/edit/', 'title': 'Команда'},
-            {'url': 'monitoring/items/', 'title': 'Анализируемые элементы'},
+            {'url': 'monitoring/items/', 'title': 'Искомые элементы'},
             {'url': 'groups/', 'title': 'Группы анализируемых элементов'},
             {'url': 'vk/', 'title': 'Настройки приложения Вконтакте'},
             {'url': 'invite/', 'title': 'Пригласить пользователя'},

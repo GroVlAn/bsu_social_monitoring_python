@@ -6,6 +6,41 @@
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 20px;
+
+    &.this--flex {
+        display: flex;
+
+        @media (--tablet) {
+            flex-wrap: wrap;
+        }
+
+        .monitoring__data {
+            @media (--tabletMax) {
+                flex: 0 1 80%;
+            }
+            @media (--tablet) {
+                flex: 1 0 100%;
+                order: 2;
+            }
+        }
+
+        .monitoring__form_block {
+            @media (--tabletMax) {
+                flex: 0 0 20%;
+                margin-left: 20px;
+            }
+
+            @media (--tablet) {
+                flex: 1 0 100%;
+                order: 1;
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+.monitoring_date_form__field {
+    margin-bottom: 20px;
 }
 
 .monitoring__name {

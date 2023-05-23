@@ -15,13 +15,13 @@ class VkAPIPostService(VkAPIAbstractService):
     def __init__(self, *,
                  redis_handler: RedisHandler,
                  vk_handler: VkHandler,
-                 analyzed_items: List[SearchItem],
+                 search_items: List[SearchItem],
                  vk_validation: VkValidationHandler):
         super().__init__(redis_handler=redis_handler, vk_handler=vk_handler, vk_validation=vk_validation)
         self._vk_posts_handler = self.vk_handler.create_handler(handler_type=VkHandlerType.POST)
         self._count_of_get_post = 100
         self._offset_of_get_post = 0
-        self._analyzed_items = analyzed_items
+        self._search_items = search_items
 
     def get_posts(self) -> None:
         """
@@ -62,7 +62,7 @@ class VkAPIPostService(VkAPIAbstractService):
         self._redis_handler.save_key_value(json_post)
 
     def save_post(self, *, post: dict) -> None:
-        for search_item in self._analyzed_items:
+        for search_item in self._search_items:
             keywords = SearchItemService.get_keywords_tuple(search_item=search_item)
             if VkValidationHandler.text_contains_in_text_post(
                     current_text=post['text'],

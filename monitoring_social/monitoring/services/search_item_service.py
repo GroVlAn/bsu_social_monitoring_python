@@ -27,10 +27,10 @@ class SearchItemService:
 
     @staticmethod
     def get_list(*, team: Team, name_grop: str) -> tuple[Optional[SearchItem]]:
-        group_analyzed_items = GroupSearchItems.objects.get(name=name_grop)
+        group_search_items = GroupSearchItems.objects.get(name=name_grop)
         return tuple(SearchItem.objects
                      .select_related('summary_statistics').order_by('-summary_statistics__score')
-                     .filter(team=team, group=group_analyzed_items))
+                     .filter(team=team, group=group_search_items))
 
     @staticmethod
     def get_all_groups_by_team(team: Team) -> tuple[GroupSearchItems]:
@@ -43,12 +43,12 @@ class SearchItemService:
                      .order_by('-summary_statistics__score'))
 
     @staticmethod
-    def _sum_children_statistic(*, analyzed_items: tuple[SearchItem]):
-        for analyzed_item in analyzed_items:
-            if analyzed_item.parent:
-                parent_search_item = SearchItem.objects.get(pk=analyzed_item.parent.id)
+    def _sum_children_statistic(*, search_item: tuple[SearchItem]):
+        for search_item in search_item:
+            if search_item.parent:
+                parent_search_item = SearchItem.objects.get(pk=search_item.parent.id)
                 parent_summary = SearchItemsSummaryStatistics.objects.get(owner=parent_search_item)
-                children_summary = SearchItemsSummaryStatistics.objects.get(owner=analyzed_item)
+                children_summary = SearchItemsSummaryStatistics.objects.get(owner=search_item)
 
                 parent_summary.likes = str(int(parent_summary.likes) + int(children_summary.likes))
                 parent_summary.comments = str(int(parent_summary.comments) + int(children_summary.comments))
@@ -60,15 +60,15 @@ class SearchItemService:
     # TODO fix it
     @staticmethod
     def get_all_by_date(team: Team, group_name: str, date_from, date_to=None):
-        group_analyzed_items = GroupSearchItems.objects.get(name=group_name)
+        group_search_items = GroupSearchItems.objects.get(name=group_name)
         if date_to is None:
             date_to = date_from + relativedelta(months=1)
-        analyzed_items = tuple(SearchItem.objects.filter(team=team,
+        search_items = tuple(SearchItem.objects.filter(team=team,
                                                            ))
         result = []
-        for analyzed_item in analyzed_items:
+        for search_item in search_items:
             statistics = Statistics.objects.filter(
-                Q(owner=analyzed_item) &
+                Q(owner=search_item) &
                 Q(date_from__gte=date_from) &
                 Q(date_to__lte=date_to)
             )
@@ -78,7 +78,7 @@ class SearchItemService:
             score = likes + comments + reposts
 
             data = {
-                'analyzed_item': analyzed_item,
+                'search_item': search_item,
                 'likes': likes,
                 'comments': comments,
                 'reposts': reposts,
@@ -86,11 +86,11 @@ class SearchItemService:
             }
             result.append(data)
         for item in result:
-            print(item['analyzed_item'].parent_id)
-            if item['analyzed_item'].parent_id:
+            print(item['search_item'].parent_id)
+            if item['search_item'].parent_id:
                 parent_index = next((index
                                      for (index, value) in enumerate(result)
-                                     if value['analyzed_item'].id == item['analyzed_item'].parent_id
+                                     if value['search_item'].id == item['search_item'].parent_id
                                      ), None)
                 result[parent_index]['likes'] += item['likes']
                 result[parent_index]['comments'] += item['comments']
@@ -100,19 +100,19 @@ class SearchItemService:
 
     @staticmethod
     def count_summary(team):
-        analyzed_items = tuple(SearchItem.objects.filter(team=team))
+        search_items = tuple(SearchItem.objects.filter(team=team))
 
-        for analyzed_item in analyzed_items:
-            statistics_list = tuple(Statistics.objects.filter(owner=analyzed_item))
+        for search_item in search_items:
+            statistics_list = tuple(Statistics.objects.filter(owner=search_item))
 
             likes = sum([int(statistics.likes) for statistics in statistics_list])
             comments = sum([int(statistics.comments) for statistics in statistics_list])
             reposts = sum([int(statistics.reposts) for statistics in statistics_list])
-            summary_analyzed_item = SearchItemsSummaryStatistics.objects.get(pk=analyzed_item.id)
-            summary_analyzed_item.likes = likes
-            summary_analyzed_item.comments = comments
-            summary_analyzed_item.reposts = reposts
-            summary_analyzed_item.score = likes + comments + reposts
-            summary_analyzed_item.save()
+            summary_search_item = SearchItemsSummaryStatistics.objects.get(pk=search_item.id)
+            summary_search_item.likes = likes
+            summary_search_item.comments = comments
+            summary_search_item.reposts = reposts
+            summary_search_item.score = likes + comments + reposts
+            summary_search_item.save()
 
-        SearchItemService._sum_children_statistic(analyzed_items=analyzed_items)
+        SearchItemService._sum_children_statistic(search_item=search_items)
