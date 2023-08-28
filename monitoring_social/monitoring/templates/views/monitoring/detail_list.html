@@ -1,6 +1,7 @@
 <div class="monitoring">
     <div class="monitoring__wrapper this--flex">
         <div class="monitoring__data">
+            {% if not new_result %}
             <table class="monitoring__table">
                 <thead class="monitoring__thread">
                 <tr class="monitoring__tr">
@@ -37,36 +38,62 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+            <table class="monitoring__table">
+                <thead class="monitoring__thread">
+                <tr class="monitoring__tr">
+                    <th class="monitoring__th">№</th>
+                    <th class="monitoring__th">Название</th>
+                    <th class="monitoring__th">Лайки</th>
+                    <th class="monitoring__th">Комментарии</th>
+                    <th class="monitoring__th">Репосты</th>
+                    <th class="monitoring__th">Счёт</th>
+                </tr>
+                </thead>
+                <tbody class="monitoring__tbody">
+                {% for search_item in new_result.search_items %}
+                    <tr class="monitoring_tr">
+                        <td class="monitoring_td">
+                            {{ forloop.counter }}
+                        </td>
+                        <td class="monitoring_td">
+                            {{ search_item.search_item.name }}
+                        </td>
+                        <td class="monitoring_td">
+                            {{ search_item.likes }}
+                        </td>
+                        <td class="monitoring_td">
+                            {{ search_item.comments }}
+                        </td>
+                        <td class="monitoring_td">
+                            {{ search_item.reposts }}
+                        </td>
+                        <td class="monitoring_td">
+                            {{ search_item.score }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
         </div>
         <div class="monitoring__form_block">
-            <form action="" method="GET" class="monitoring_date_form">
-                {{ csrt_token }}
+
+            <form action="{% url 'monitoring_detail' group_slug=slug %}" method="POST" class="monitoring_date_form">
+                {% csrf_token %}
                 <div class="monitoring__form_block__title">
                     Отфильтровать по дате
                 </div>
-                <div class="monitoring_date_form__field">
-                    <label for="monitoring_date_from"
-                           class="monitoring__form_block__label">
-                        С
-                    </label>
-                    <input class="js_date_picker"
-                           name="date_from"
-                           id="monitoring_date_from"
-                           placeholder="dd.mm.yyyy"
-                           type="text">
-                </div>
-                <div class="monitoring_date_form__field">
-                    <label for="monitoring_date_to"
-                           class="monitoring__form_block__label">
-                        До
-                    </label>
-
-                    <input class="js_date_picker"
-                           name="date_to"
-                           id="monitoring_date_to"
-                           placeholder="dd.mm.yyyy"
-                           type="text">
-                </div>
+                {% for field in form %}
+                    <div class="monitoring_date_form__field">
+                        <label for="monitoring_date_from"
+                               class="monitoring__form_block__label">
+                            {{ field.label }}
+                        </label>
+                        {{ field.error }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
                 <input type="submit" value="Отфильтровать" class="btn">
 
             </form>

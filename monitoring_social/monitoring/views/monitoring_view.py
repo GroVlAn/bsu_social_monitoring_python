@@ -2,9 +2,11 @@ import datetime
 
 from django.core.cache import cache
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, FormView, TemplateView
+from django.views.generic.edit import FormMixin
 
+from monitoring.forms.filter_search_item_form import FilterSearchItemsForm
 from monitoring.forms.search_items_form import SearchItemsForm, GroupSearchItemsForm
 from monitoring.mixins import BaseMixin
 from monitoring.models_db.search_items import GroupSearchItems, SearchItem
@@ -144,7 +146,7 @@ class MonitoringVkUsersByDateView(BaseMixin, TemplateView):
         user = self.request.user
         team_key = f'{user.id}_{user.username}_team'
         current_team = cache.get(team_key)
-        date_from = datetime.datetime(2023, 4, 1)
+        date_from = datetime.datetime(2023, 7, 1)
         c_def['result'] = VkUsersService.get_all_by_date(
             team=current_team,
             date_from=date_from
@@ -179,28 +181,34 @@ class MonitoringDetailByDate(BaseMixin, TemplateView):
         user = self.request.user
         team_key = f'{user.id}_{user.username}_team'
         current_team = cache.get(team_key)
-        date_from = datetime.datetime(2023, 4, 1)
+        date_from = datetime.datetime(2023, 7, 1)
         search_items_result = SearchItemService.get_all_by_date(
             team=current_team,
             group_name=group_slug,
             date_from=date_from
         )
-        filtered_search_items = filter(
+
+        filtered_search_items =list( filter(
             lambda ai: ai['search_item'].group.name == group_slug,
             search_items_result
-        )
+        ))
+
         c_def['result'] = {
             'name_group': group_ru_name,
-            'search_item': filtered_search_items
+            'search_items': filtered_search_items
         }
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class MonitoringDetailView(BaseMixin, ListView):
+class MonitoringDetailView(BaseMixin, ListView, FormMixin):
     model = GroupSearchItems
+    form_class = FilterSearchItemsForm
     title = 'Искомые элементы'
     template_name = 'pages/monitoring/detail/index.html'
     slug_field = 'monitoring_slug'
+
+    def get_success_url(self):
+        return reverse('monitoring_detail', kwargs={'group_slug': self.kwargs.get('group_slug')})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -209,17 +217,49 @@ class MonitoringDetailView(BaseMixin, ListView):
         user = self.request.user
         key_team = f'{user.id}_{user.username}_team'
         current_team = cache.get(key_team)
-        print(group)
         search_items = SearchItemService.get_by_group(
             team=current_team,
             group=group
         )
         group_ru_name = GroupSearchItems.objects.get(name=group).ru_name
-
+        print(self.request.POST)
+        c_def['slug'] = group
         c_def['result'] = {'name_group': group_ru_name,
                            'search_items': search_items}
         return dict(list(context.items()) + list(c_def.items()))
 
+    def post(self, request, *args, **kwargs):
+        print(self.request.POST)
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        group_slug = self.kwargs.get('group_slug')
+        group_ru_name = GroupSearchItems.objects.get(name=group_slug).ru_name
+        user = self.request.user
+        team_key = f'{user.id}_{user.username}_team'
+        current_team = cache.get(team_key)
+        date_from = datetime.datetime.strptime(form.date_from, '%d.%m.%Y')
+        date_to = datetime.datetime.strptime(form.date_to, '%d.%m.%Y')
+        search_items_result = SearchItemService.get_all_by_date(
+            team=current_team,
+            group_name=group_slug,
+            date_from=date_from,
+            date_to=date_to
+        )
+        filtered_search_items = filter(
+            lambda ai: ai['search_item'].group.name == group_slug,
+            search_items_result
+        )
+        context['new_result'] = {
+            'name_group': group_ru_name,
+            'search_item': filtered_search_items
+        }
+        return self.render_to_response(context)
 
 def start_getting_data_from_vk(request):
     if request.method == 'POST' and request.user.is_authenticated:

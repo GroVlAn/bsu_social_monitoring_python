@@ -86,7 +86,6 @@ class SearchItemService:
             }
             result.append(data)
         for item in result:
-            print(item['search_item'].parent_id)
             if item['search_item'].parent_id:
                 parent_index = next((index
                                      for (index, value) in enumerate(result)
