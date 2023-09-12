@@ -128,3 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 /monitoring_social/static/node_modules/
+/monitoring_social/monitoring_social/.env.dev
+/monitoring_social/monitoring_social/.env.prod

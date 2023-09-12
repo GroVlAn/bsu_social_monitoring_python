@@ -11,6 +11,13 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'monitoring_social.settings')
+from monitoring_social.settings.base import DEBUG
+
+if DEBUG:
+    name_settings = 'local'
+else:
+    name_settings = 'production'
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'monitoring_social.settings.{name_settings}')
 
 application = get_wsgi_application()

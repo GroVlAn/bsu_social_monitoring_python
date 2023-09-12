@@ -12,30 +12,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-from monitoring_social.config import (
-    NAME,
-    USER,
-    PASSWORD,
-    HOST,
-    PORT,
-    DJANGO_SECRETE_KEY
-)
+from monitoring_social.config.config_dev import DJANGO_SECRETE_KEY_DEV
+from monitoring_social.config.config_prod import DJANGO_SECRETE_KEY_PROD
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = DJANGO_SECRETE_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+SECRET_KEY = DJANGO_SECRETE_KEY_DEV if DEBUG else DJANGO_SECRETE_KEY_PROD
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -66,6 +54,7 @@ MIDDLEWARE = [
     'apps.authentication.middlewares.roles_middleware.RequireRolesMiddleware'
 ]
 
+
 ROOT_URLCONF = 'monitoring_social.urls'
 
 TEMPLATES = [
@@ -73,6 +62,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'templates',
+            BASE_DIR / 'static',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -87,23 +77,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'monitoring_social.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': PORT,
-    }
-}
-
-# Password validation
-# https:/d/docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -134,10 +107,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = f'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # добавляем путь к статическим файлам
+    BASE_DIR / 'static',
 ]
 
 # Default primary key field type

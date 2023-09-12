@@ -3,10 +3,18 @@
 import os
 import sys
 
+from monitoring_social.settings.base import DEBUG
+
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'monitoring_social.settings')
+
+    if DEBUG:
+        name_settings = 'local'
+    else:
+        name_settings = 'production'
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'monitoring_social.settings.{name_settings}')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
