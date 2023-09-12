@@ -87,10 +87,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'social_monitoring',
-        'USER': 'admin',
+        'USER': 'vladislav',
         'PASSWORD': '3513',
         'HOST': 'localhost',
-        'PORT': '5444',
+        'PORT': '5432',
     }
 }
 

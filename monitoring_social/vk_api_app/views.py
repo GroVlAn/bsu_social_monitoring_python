@@ -19,9 +19,13 @@ class VkSettingsView(BaseMixin, CreateView):
         user = self.request.user
         team_key = f'{user.id}_{user.username}_team'
         team = cache.get(team_key)
-        if team:
+        print('team_key: ', team_key)
+        print('team: ', team)
+
+        try:
             return VkSettings.objects.get(team=team)
-        return None
+        except VkSettings.DoesNotExist:
+            return None
 
     def get_form_kwargs(self):
         kwargs = super(VkSettingsView, self).get_form_kwargs()

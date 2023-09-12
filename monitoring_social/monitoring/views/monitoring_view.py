@@ -67,11 +67,12 @@ class CreateSearchItem(BaseMixin, FormView):
     template_name = 'pages/monitoring/create/index.html'
     success_url = reverse_lazy('monitoring')
 
+    # TODO Needed fixes
     def get_success_url(self):
         group_id = self.kwargs.get('id')
         if group_id is not None:
             return reverse_lazy('search_items_settings')
-        return reverse_lazy('monitoring')
+        return reverse('monitoring_detail', kwargs={'group_slug': 'instituty'})
 
     def get_form_kwargs(self):
         kwargs = super(CreateSearchItem, self).get_form_kwargs()
