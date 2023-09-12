@@ -17,7 +17,8 @@ from monitoring_social.config import (
     USER,
     PASSWORD,
     HOST,
-    PORT
+    PORT,
+    DJANGO_SECRETE_KEY
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ohiajt&_&h!y3o374s=h5ef3(z%wrma#tn03a=v_w)b7t=7*2d'
+SECRET_KEY = DJANGO_SECRETE_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
