@@ -27,6 +27,7 @@ class RequireRolesMiddleware:
     @staticmethod
     def check_needed_redirect_create_team(*, path: str, user: User) -> bool:
         """If user is already create account, he needed to create new team"""
+
         return not path == reverse('create_team') and \
             not path == reverse('logout') and \
             not Team.objects.filter(users=user) and \
@@ -34,26 +35,25 @@ class RequireRolesMiddleware:
 
     def __call__(self, request):
         """Checker allows paths"""
+
         user = request.user
         path = request.path
 
         if not user.is_authenticated:
+
             if path == 'admin' and not has_role(user=user, roles=('admin',)):
                 return redirect(reverse('sign_in_page'))
         else:
 
             if path in self.allowed_for_admin and \
                     not has_permission(user=user, permission_name='access_admin_page'):
-
                 return redirect(reverse('monitoring'))
 
             if path in self.not_allowed_for_employee and \
                     not has_permission(user=user, permission_name='edit_team_settings'):
-
                 return redirect(reverse('monitoring'))
 
             if self.check_needed_redirect_create_team(user=user, path=path):
-
                 return redirect(reverse('create_team'))
 
         response = self.get_response(request)

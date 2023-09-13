@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from apps.authentication.models import Invitation
+
+
+class InvitationAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Invitation, InvitationAdmin)

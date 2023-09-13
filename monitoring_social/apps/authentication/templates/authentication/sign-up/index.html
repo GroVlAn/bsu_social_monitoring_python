@@ -4,7 +4,7 @@
     <h1 class="sign__title">Регистрация</h1>
     <div class="auth">
         <div class="auth__wrapper">
-            <form class="auth__form" action="{% url 'sign_up_page' %}" method="post">
+            <form class="auth__form" action="{% url 'sign_up_page' %}?uuid={{ uuid }}" method="post">
                 {% csrf_token %}
                 {% if uuid %}
                     <input type="hidden" name="uuid" value="{{ uuid }}">

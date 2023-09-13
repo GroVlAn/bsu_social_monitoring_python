@@ -1,10 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
 
 def index(request):
-    return render(request, 'pages/index.html')
-
-
-
-
-
+    return redirect('monitoring')

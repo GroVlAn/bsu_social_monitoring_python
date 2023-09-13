@@ -4,7 +4,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, User
 from django.contrib.auth.models import User
 from rolepermissions.roles import assign_role
 
-
 INPUT_CLASS = 'auth__input'
 
 
@@ -79,6 +78,7 @@ class SignUpForm(UserCreationForm):
 
         return user
 
+
 class EditProfileForm(UserChangeForm):
     last_name = forms.CharField(
         label='Фамилия',
@@ -120,6 +120,7 @@ class EditProfileForm(UserChangeForm):
 
     def clean(self):
         cleaned_data = super().clean()
+
         old_password = cleaned_data.get('password')
 
         if not old_password:
@@ -139,12 +140,15 @@ class EditProfileForm(UserChangeForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+
         user.first_name = self.cleaned_data.get('first_name')
         user.last_name = self.cleaned_data.get('last_name')
         user.email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('new_password1')
+
         if password:
             user.set_password(password)
         if commit:
             user.save()
+
         return user

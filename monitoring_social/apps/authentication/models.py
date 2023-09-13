@@ -5,6 +5,7 @@ from django.db import models
 
 class Invitation(models.Model):
     """Model for containing info about invite on link"""
+
     UUID = models.TextField(default=uuid.uuid4,
                             editable=False,
                             verbose_name='UUID ссылки для приглашения')

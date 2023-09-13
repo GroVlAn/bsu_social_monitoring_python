@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = DJANGO_SECRETE_KEY_DEV if DEBUG else DJANGO_SECRETE_KEY_PROD
 

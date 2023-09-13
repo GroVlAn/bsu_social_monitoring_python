@@ -1,6 +1,6 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, CreateView
 from django.core.cache import cache
@@ -8,16 +8,19 @@ from django.core.cache import cache
 from apps.monitoring.mixins import BaseMixin
 from apps.monitoring.models_db.team import Team
 from apps.monitoring.utils import get_current_team
-from .services.invitation_service import InvitationService
+from .services.invitation_service import add_used_to_team, get_or_create_invitation
 from .forms import *
 
 
 class SignUpPage(CreateView):
+    """Sign in page with form for login user"""
+
     form_class = SignUpForm
     template_name = 'authentication/sign-up/index.html'
     success_url = reverse_lazy('monitoring')
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, uuid=None, **kwargs):
+
         context = super().get_context_data(**kwargs)
         uuid = self.request.GET.get('uuid')
 
@@ -27,11 +30,12 @@ class SignUpPage(CreateView):
         return context
 
     def form_valid(self, form):
+
         user = form.save()
         uuid = self.request.POST.get('uuid')
 
         if uuid is not None:
-            InvitationService.add_used_to_team(user=user, uuid=uuid)
+            add_used_to_team(user=user, uuid=uuid)
         else:
             assign_role(user, 'owner')
 
@@ -67,7 +71,7 @@ class InviteUserView(BaseMixin, TemplateView):
         c_def = self.get_base_context(title=self.title)
         user = self.request.user
         current_team = get_current_team(user)
-        invitation = InvitationService.get_or_create_invitation(user, current_team)
+        invitation = get_or_create_invitation(user, current_team)
         if invitation is None:
             c_def['error'] = 'Не удалось создать ссылку для приглашения'
         else:
