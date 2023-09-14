@@ -24,7 +24,7 @@ urlpatterns = [
     path('vk/get/data', start_getting_data_from_vk, name='get_vk_api'),
     path('settings/', SettingsPage.as_view(), name='settings'),
     path('monitoring/create/', CreateSearchItem.as_view(), name='create_search_item'),
-    path('monitoring/grop/create/', GroupSearchItemsFormView.as_view(), name='group_search_items_form'),
+    path('monitoring/group/create/', GroupSearchItemsFormView.as_view(), name='group_search_items_form'),
     path('settings/user/', UserSettingsView.as_view(), name='user_settings'),
     path('settings/monitoring/items/', SearchItemsSettingsView.as_view(), name='search_items_settings'),
     path('settings/items/edit/<int:id>',

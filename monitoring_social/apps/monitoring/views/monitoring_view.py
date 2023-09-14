@@ -11,6 +11,7 @@ from apps.monitoring.forms.search_items_form import SearchItemsForm, GroupSearch
 from apps.monitoring.mixins import BaseMixin
 from apps.monitoring.models_db.search_items import GroupSearchItems, SearchItem
 from apps.monitoring.models_db.team import Team
+from apps.monitoring.services.group_service import get_group_by_id
 from apps.monitoring.services.search_item_service import SearchItemService
 from apps.vk_api_app.models_db.vk_user import VkUser
 from apps.vk_api_app.services.vk_users_service import VkUsersService
@@ -24,19 +25,27 @@ class GroupSearchItemsFormView(BaseMixin, FormView):
     success_url = reverse_lazy('monitoring')
 
     def get_success_url(self):
+
         group_id = self.kwargs.get('id')
+
         if group_id is not None:
             return reverse_lazy('group_settings')
+
         return reverse_lazy('monitoring')
 
     def get_form_kwargs(self):
+
         kwargs = super(GroupSearchItemsFormView, self).get_form_kwargs()
         kwargs['request'] = self.request
         group_id = self.kwargs.get('id')
+
         if group_id is not None:
-            group = GroupSearchItems.objects.get(pk=group_id)
-            if group is not None:
-                kwargs['group'] = group
+
+            try:
+                kwargs['group'] = get_group_by_id(group_id=group_id)
+            except GroupSearchItems.DoesNotExist:
+                ...
+
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -47,20 +56,20 @@ class GroupSearchItemsFormView(BaseMixin, FormView):
 
         if group_id is not None:
             self.success_url = reverse_lazy('group_settings')
-        count = GroupSearchItems.objects.distinct().values('ru_name', 'team').count()
 
         return dict(list(context.items()) + list(c_def.items()))
 
-    def form_valid(self, form):
+    def form_valid(self, form: GroupSearchItemsForm):
         group_id = self.kwargs.get('id')
 
         if group_id is not None:
-            group = GroupSearchItems.objects.get(pk=group_id)
-
-            if group is not None:
+            try:
+                group = get_group_by_id(group_id=group_id)
                 form.save(group=group)
 
                 return super().form_valid(form)
+            except GroupSearchItems.DoesNotExist:
+                ...
 
         form.save()
 
@@ -97,7 +106,7 @@ class CreateSearchItem(BaseMixin, FormView):
         c_def['search_item_id'] = search_item_id
         return dict(list(context.items()) + list(c_def.items()))
 
-    def form_valid(self, form):
+    def form_valid(self, form: SearchItemsForm):
         search_item_id = self.kwargs.get('id')
 
         if search_item_id is not None:
