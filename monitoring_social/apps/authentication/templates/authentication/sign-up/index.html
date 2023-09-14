@@ -4,52 +4,56 @@
     <h1 class="sign__title">Регистрация</h1>
     <div class="auth">
         <div class="auth__wrapper">
-            <form class="auth__form" action="{% url 'sign_up_page' %}?uuid={{ uuid }}" method="post">
-                {% csrf_token %}
-                {% if uuid %}
-                    <input type="hidden" name="uuid" value="{{ uuid }}">
-                {% endif %}
-                <div class="auth__fields">
-                    <div class="auth__field this--1_2">
-                        <label for="{{ form.last_name.id }}" class="auth__label">{{ form.last_name.label }}</label>
-                        <div class="auth__errors">{{ form.last_name.errors }}</div>
-                        {{ form.last_name }}
-                    </div>
-                    <div class="auth__field this--1_2">
-                        <label for="{{ form.first_name.id }}" class="auth__label">{{ form.first_name.label }}</label>
-                        <div class="auth__errors">{{ form.first_name.errors }}</div>
-                        {{ form.first_name }}
-                    </div>
+            {% if uuid %}
+                <form class="auth__form" action="{% url 'sign_up_page' %}?uuid={{ uuid }}" method="post">
+            {% else %}
+                <form class="auth__form" action="{% url 'sign_up_page' %}" method="post">
+            {% endif %}
+            {% csrf_token %}
+            {% if uuid %}
+                <input type="hidden" name="uuid" value="{{ uuid }}">
+            {% endif %}
+            <div class="auth__fields">
+                <div class="auth__field this--1_2">
+                    <label for="{{ form.last_name.id }}" class="auth__label">{{ form.last_name.label }}</label>
+                    <div class="auth__errors">{{ form.last_name.errors }}</div>
+                    {{ form.last_name }}
                 </div>
-                 <div class="auth__fields">
-                    <div class="auth__field">
-                        <label for="{{ form.username.id }}" class="auth__label">{{ form.username.label }}</label>
-                        <div class="auth__errors">{{ form.username.errors }}</div>
-                        {{ form.username }}
-                    </div>
+                <div class="auth__field this--1_2">
+                    <label for="{{ form.first_name.id }}" class="auth__label">{{ form.first_name.label }}</label>
+                    <div class="auth__errors">{{ form.first_name.errors }}</div>
+                    {{ form.first_name }}
                 </div>
-                <div class="auth__fields">
-                    <div class="auth__field">
-                        <label for="{{ form.email.id }}" class="auth__label">{{ form.email.label }}</label>
-                        <div class="auth__errors">{{ form.email.errors }}</div>
-                        {{ form.email }}
-                    </div>
+            </div>
+            <div class="auth__fields">
+                <div class="auth__field">
+                    <label for="{{ form.username.id }}" class="auth__label">{{ form.username.label }}</label>
+                    <div class="auth__errors">{{ form.username.errors }}</div>
+                    {{ form.username }}
                 </div>
-                <div class="auth__fields">
-                    <div class="auth__field this--1_2">
-                        <label for="{{ form.password1.id }}" class="auth__label">{{ form.password1.label }}</label>
-                        <div class="auth__errors">{{ form.password1.errors }}</div>
-                        {{ form.password1 }}
-                    </div>
-                    <div class="auth__field this--1_2">
-                        <label for="{{ form.password2.id }}" class="auth__label">{{ form.password2.label }}</label>
-                        <div class="auth__errors">{{ form.password2.errors }}</div>
-                        {{ form.password2 }}
-                    </div>
+            </div>
+            <div class="auth__fields">
+                <div class="auth__field">
+                    <label for="{{ form.email.id }}" class="auth__label">{{ form.email.label }}</label>
+                    <div class="auth__errors">{{ form.email.errors }}</div>
+                    {{ form.email }}
                 </div>
-                <div class="auth__btn">
-                    <button class="btn" type="submit">Зарегистрироваться</button>
+            </div>
+            <div class="auth__fields">
+                <div class="auth__field this--1_2">
+                    <label for="{{ form.password1.id }}" class="auth__label">{{ form.password1.label }}</label>
+                    <div class="auth__errors">{{ form.password1.errors }}</div>
+                    {{ form.password1 }}
                 </div>
+                <div class="auth__field this--1_2">
+                    <label for="{{ form.password2.id }}" class="auth__label">{{ form.password2.label }}</label>
+                    <div class="auth__errors">{{ form.password2.errors }}</div>
+                    {{ form.password2 }}
+                </div>
+            </div>
+            <div class="auth__btn">
+                <button class="btn" type="submit">Зарегистрироваться</button>
+            </div>
             </form>
         </div>
         <div class="auth__sing_link_block">
