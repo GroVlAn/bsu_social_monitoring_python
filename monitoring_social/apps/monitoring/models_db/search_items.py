@@ -29,6 +29,7 @@ class GroupSearchItems(models.Model):
         if not self.name:
             slug_text = slugify(self.ru_name, allow_unicode=True)
             self.name = translit(slug_text, 'ru', reversed=True)
+
         super(GroupSearchItems, self).save(*args, **kwargs)
 
     class Meta:
@@ -55,6 +56,7 @@ class SearchItem(models.Model):
     )
 
     def __str__(self):
+
         return self.name
 
     class Meta:

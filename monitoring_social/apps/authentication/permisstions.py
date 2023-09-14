@@ -10,6 +10,8 @@ allowed_for_admin = {
 
 def access_admin(path: str, user: User):
     """Access to admin page only for admin"""
+
     if path in allowed_for_admin and has_role(user=user, roles=('admin',)):
         return True
+
     return False

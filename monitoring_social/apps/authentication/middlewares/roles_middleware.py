@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse
 from rolepermissions.checkers import has_role, has_permission
-from rolepermissions.permissions import available_perm_status
 
 from apps.monitoring.models_db.team import Team
 

@@ -8,14 +8,18 @@ from apps.vk_api_app.services.vk_api_service import thread_worker
 
 
 def task_exits(task_id):
+
     result = AsyncResult(task_id, app=app)
+
     return result.state in ('PENDING', 'STARTED', 'RETRY')
 
 
 @app.task
 def start_get_data(body):
+
     task_id = str(body['user_id']) + body['user_name']
     result = AsyncResult(task_id)
+
     if not result.state < state(STARTED):
         return {'status': 'error', 'message': f'task by user {body["user_id"]} already exist'}
 

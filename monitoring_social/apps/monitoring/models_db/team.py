@@ -20,7 +20,9 @@ class Team(models.Model):
     )
 
     def __str__(self):
+
         return self.name
 
     def to_json(self):
+
         return {'name': self.name}

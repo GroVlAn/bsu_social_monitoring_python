@@ -1,8 +1,7 @@
 from django import forms
-from django.contrib.auth import update_session_auth_hash, authenticate
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
-from rolepermissions.roles import assign_role
 
 INPUT_CLASS = 'auth__input'
 
@@ -71,6 +70,7 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'last_name', 'first_name', 'email', 'password1', 'password2')
 
     def save(self, commit=True):
+
         user = super().save(commit=False)
 
         if commit:
@@ -107,6 +107,7 @@ class EditProfileForm(UserChangeForm):
     )
 
     def __init__(self, *args, **kwargs):
+
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
 
@@ -119,6 +120,7 @@ class EditProfileForm(UserChangeForm):
         )
 
     def clean(self):
+
         cleaned_data = super().clean()
 
         old_password = cleaned_data.get('password')
@@ -139,6 +141,7 @@ class EditProfileForm(UserChangeForm):
         return cleaned_data
 
     def save(self, commit=True):
+
         user = super().save(commit=False)
 
         user.first_name = self.cleaned_data.get('first_name')
@@ -148,6 +151,7 @@ class EditProfileForm(UserChangeForm):
 
         if password:
             user.set_password(password)
+
         if commit:
             user.save()
 

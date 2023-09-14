@@ -6,12 +6,15 @@ from apps.monitoring.models_db.team import *
 
 class TeamForm(forms.ModelForm):
     def __init__(self, team=None, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
+
         if team is not None:
             self.fields['name'].initial = team.name
             self.fields['description'].initial = team.description
 
     def save(self, team=None, user=None, commit=True):
+
         if team is None:
             team = super().save(commit=False)
         else:
@@ -22,10 +25,13 @@ class TeamForm(forms.ModelForm):
 
         if commit:
             team.save()
+
         if user and team is not None:
             team.users.add(user)
+
         if commit:
             team.save()
+
         return team
 
     class Meta:

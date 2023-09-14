@@ -17,4 +17,5 @@ class Invitation(models.Model):
         db_table = 'user_invitation'
 
     def __str__(self):
+
         return f"UUID: {self.UUID}"

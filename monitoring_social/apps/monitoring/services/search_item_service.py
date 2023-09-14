@@ -8,6 +8,7 @@ from apps.monitoring.models_db.statistics import Statistics
 from apps.vk_api_app.models_db.vk_post import VkPost
 from django.db.models import Q
 
+
 class SearchItemService:
 
     @staticmethod

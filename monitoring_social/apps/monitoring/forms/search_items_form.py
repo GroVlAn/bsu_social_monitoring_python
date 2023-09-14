@@ -23,17 +23,21 @@ class GroupSearchItemsForm(forms.ModelForm):
     )
 
     def __init__(self, request=None, group: GroupSearchItems = None, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
+
         if group is not None:
             self.fields['ru_name'].initial = group.ru_name
             self.fields['level'].initial = group.level
             self.fields['team'].initial = group.team
+
         if request is not None:
             self.fields['team'].queryset = Team.objects.filter(users=request.user)
             self.fields['team'].label = 'Команда'
             self.fields['team'].empty_label = None
 
     def save(self, group=None, commit=True):
+
         if group is None:
             group = super().save(commit=False)
         else:
@@ -75,18 +79,22 @@ class SearchItemsForm(forms.ModelForm):
     )
 
     def __init__(self, request, search_item: SearchItem = None, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
+
         if search_item is not None:
             self.fields['group'].initial = search_item.group
             self.fields['name'].initial = search_item.name
             self.fields['description'].initial = search_item.description
             self.fields['parent'].initial = search_item.parent
             self.fields['team'].initial = search_item.team
+
         self.fields['team'].queryset = Team.objects.filter(users=request.user)
         self.fields['team'].label = 'Команда'
         self.fields['team'].empty_label = None
 
     def save(self, search_item: SearchItem = None, commit=True):
+
         if search_item is None:
             search_item = super().save(commit=False)
         else:
