@@ -43,8 +43,8 @@ class SearchItem(models.Model):
         verbose_name='Название анализируемого элемента'
     )
     description = models.TextField(null=True, verbose_name='Описание')
-    date_create = models.DateTimeField(default=timezone.now)
-    last_update = models.DateTimeField(default=timezone.now)
+    time_create = models.DateTimeField(default=timezone.now)
+    time_update = models.DateTimeField(default=timezone.now)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     group = models.ForeignKey(GroupSearchItems, on_delete=models.CASCADE)
     parent = models.ForeignKey(
